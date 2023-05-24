@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanjicionário</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: firebrick;
+            color: white;
+            padding: 0.5em 1em;
+        }
+
+        #form {
+            position: fixed;
+            transition: 50% 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #d2d2d2;
+            padding: 2em;
+            border-radius: 1em;
+        }
+        #form h2 {
+            text-align: center;
+            margin-bottom: 0.5em;
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin: 0.5em 0;
+        }
+        #form input[type="button"] {
+            background-color: #da6464;
+            padding: 0.1em;
+            border-radius: 0.3em;
+            transition: 0.1s;
+        }
+        #form input[type="button"]:hover {
+            background-color: #e1e1e1;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <p>Logo</p>
+        <p>+</p>
+    </nav>
+    <header id="form">
+        <h2>Adicionar Kanji</h2>
+        <form action="#" method="get">
+            <section class="field">
+                <label for="Hiragana">Hiragana:</label>
+                <input type="text" name="Hiragana" id="Hiragana">
+            </section>
+            <section class="field">
+                <label for="Romanji">Romanji:</label>
+                <input type="text" name="Romanji" id="Romanji">
+            </section>
+            <section class="field">
+                <label for="Significado">Significado:</label>
+                <input type="text" name="Significado" id="Significado">
+            </section>
+            <input type="button" value="Adicionar">
+        </form>
+    </header>
+</body>
+</html>
