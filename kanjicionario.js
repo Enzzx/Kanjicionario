@@ -18,7 +18,5 @@ function createKanji() {
     const cap = document.querySelector("#caption").value
     const newBox = document.createElement("article")
 
-    
-
     const $kanji = new makeKanji(hir, rom, cap, newBox)
 }
