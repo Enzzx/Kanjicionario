@@ -11,15 +11,26 @@
             padding: 0;
         }
 
+        body {
+            background-color: #c8c8c8;
+        }
+
         nav {
             display: flex;
             justify-content: space-between;
             background-color: firebrick;
             color: white;
-            padding: 0.5em 1em;
+            padding: 0.7em 1em;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin: 0 0.5em;
+            padding: 1em 0 0.5em 0.5em;
         }
 
         #form {
+            display: none;
             position: fixed;
             transition: 50% 50%;
             top: 50%;
@@ -47,6 +58,29 @@
         #form input[type="button"]:hover {
             background-color: #e1e1e1;
         }
+
+        body > section {
+            display: flex;
+            justify-content: space-around;
+            padding: 1em;
+        }
+        .kanji-box {
+            background-color: #b2b2b2;
+            margin: 0.3em 0.7em;
+            padding: 0.4em;
+            border-radius: 0.7em;
+            box-shadow: 1px 3px 3px #00000042;
+        }
+        .k
+        .kanji-item {
+            color: #373737;
+            padding: 0 0.3em;
+        }
+        .kanji-caption {
+            color: #444444;
+            font-size: 0.9em;
+            padding: 0 0.3em;
+        }
     </style>
 </head>
 <body>
@@ -54,23 +88,55 @@
         <p>Logo</p>
         <p>+</p>
     </nav>
+    <h1>Número de Kanjis:</h1>
     <header id="form">
         <h2>Adicionar Kanji</h2>
         <form action="#" method="get">
             <section class="field">
                 <label for="Hiragana">Hiragana:</label>
-                <input type="text" name="Hiragana" id="Hiragana">
+                <input type="text" name="hiragana" id="hiragana">
             </section>
             <section class="field">
                 <label for="Romanji">Romanji:</label>
-                <input type="text" name="Romanji" id="Romanji">
+                <input type="text" name="romanji" id="romanji">
             </section>
             <section class="field">
                 <label for="Significado">Significado:</label>
-                <input type="text" name="Significado" id="Significado">
+                <input type="text" name="caption" id="caption">
             </section>
-            <input type="button" value="Adicionar">
+            <input type="button" value="Adicionar" onclick="createKanji()">
         </form>
     </header>
+    <section>
+        <article class="kanji-box">
+            <aside>
+                <h3 class="kanji-item">Hiragana</h3>
+                <p class="kanji-caption">jytf</p>
+            </aside>
+            <aside>
+                <h3 class="kanji-item">Romanji</h3>
+                <p class="kanji-caption">hngcjh</p>
+            </aside>
+            <aside>
+                <h3 class="kanji-item">Caption</h3>
+                <p class="kanji-caption">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
+            </aside>
+        </article>
+        <article class="kanji-box">
+            <aside>
+                <h3 class="kanji-item">Hiragana</h3>
+                <p class="kanji-caption">jytf</p>
+            </aside>
+            <aside>
+                <h3 class="kanji-item">Romanji</h3>
+                <p class="kanji-caption">hngcjh</p>
+            </aside>
+            <aside>
+                <h3 class="kanji-item">Caption</h3>
+                <p class="kanji-caption">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
+            </aside>
+        </article>
+    </section>
+    <script src="kanjicionario.js"></script>
 </body>
 </html>
