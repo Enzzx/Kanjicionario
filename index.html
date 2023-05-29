@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanjicionário</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+
         * {
+            font-family: 'Secular One', sans-serif;
             margin: 0;
             padding: 0;
         }
@@ -22,7 +25,7 @@
             color: white;
             padding: 0.7em 1em;
         }
-        #open-form {
+        #form-button {
             font-size: 0.8em;
             font-family: Arial, Helvetica, sans-serif;
             font-weight: bold;
@@ -35,6 +38,10 @@
             padding: 1em 0 0.5em 0.5em;
         }
 
+        .open {
+            opacity: 0;
+            visibility: hidden;
+        }
         .form {
             position: fixed;
             transition: 50% 50%;
@@ -43,8 +50,6 @@
             transform: translate(-50%, -50%);
             background-color: #d2d2d2;
             padding: 2em;
-            opacity: 0;
-            visibility: hidden;
             border-radius: 1em;
             box-shadow: 1px 1px 15px #00000061;
         }
@@ -70,14 +75,19 @@
         body > section {
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
             padding: 1em;
         }
         .kanji-box {
+            flex: 50%;
             background-color: #b2b2b2;
             margin: 0.3em 0.7em;
-            padding: 0.4em;
+            padding: 0.6em;
             border-radius: 0.7em;
             box-shadow: 1px 3px 3px #00000042;
+        }
+        .kanji-box > aside:last-child {
+            font-size: 14px;
         }
         .kanji-box > aside {
             padding: 0.4em 0;
@@ -92,17 +102,29 @@
             font-size: 0.9em;
             padding: 0 0.4em;
         }
+
+        
+        @media screen and (max-width: 500px) {
+            body > section {
+                justify-content: center;
+            }
+
+            .kanji-box {
+                flex: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <nav>
         <p>Logo</p>
-        <p id="open-form" onclick="openForm()">add kanji</p>
+        <p id="form-button" onclick="openForm()">add kanji</p>
     </nav>
     <h1>Número de Kanjis:</h1>
-    <header class="form">
+    <header class="form open">
         <h2>Adicionar Kanji</h2>
         <form action="#" method="get">
+            <!--  <input type="file" name="file" id="file" accept="image/jpeg, image/png">  -->
             <section class="field">
                 <label for="Hiragana">Hiragana:</label>
                 <input type="text" name="hiragana" id="hiragana">
