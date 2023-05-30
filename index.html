@@ -21,6 +21,7 @@
         nav {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             background-color: firebrick;
             color: white;
             padding: 0.7em 1em;
@@ -62,34 +63,57 @@
             flex-direction: column;
             margin: 0.5em 0;
         }
-        .form input[type="button"] {
+        .field-buttons {
+        	display: flex;
+        	justify-content: space-between;
+        	margin-top: 1em;
+        }
+        .field-buttons input {
             background-color: #da6464;
-            padding: 0.1em;
+            padding: 0.2em 0.4em;
             border-radius: 0.3em;
             transition: 0.1s;
         }
-        .form input[type="button"]:hover {
+        .field-buttons input:hover {
             background-color: #e1e1e1;
         }
 
         body > section {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             flex-wrap: wrap;
             padding: 1em;
         }
         .kanji-box {
-            flex: 50%;
+            flex: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             background-color: #b2b2b2;
-            margin: 0.3em 0.7em;
+            margin: 0.8em 0.7em;
             padding: 0.6em;
             border-radius: 0.7em;
             box-shadow: 1px 3px 3px #00000042;
         }
-        .kanji-box > aside:last-child {
+        .top-box {
+        	display: flex;
+        	justify-content: space-between;
+        	align-items: center;
+        }
+        .top-box article {
+        	flex: 40%;
+        }
+        .top-box img {
+        	width: 90%;
+        	border-radius: 0.7em;
+        }
+        .top-box .kanji-item {
+        	color: #c91122;
+        }
+        .bottom-box {
             font-size: 14px;
         }
-        .kanji-box > aside {
+        .kanji-box aside {
             padding: 0.4em 0;
         }
         .kanji-item {
@@ -104,7 +128,7 @@
         }
 
         
-        @media screen and (max-width: 500px) {
+        @media screen and (max-width: 800px) {
             body > section {
                 justify-content: center;
             }
@@ -124,50 +148,83 @@
     <header class="form open">
         <h2>Adicionar Kanji</h2>
         <form action="#" method="get">
-            <!--  <input type="file" name="file" id="file" accept="image/jpeg, image/png">  -->
+            <input type="file" name="file" id="file" accept="image/*">  
             <section class="field">
-                <label for="Hiragana">Hiragana:</label>
-                <input type="text" name="hiragana" id="hiragana">
+                <label for="hiragana">Hiragana:</label>
+                <input type="text" name="hiragana" id="hiragana" required>
             </section>
             <section class="field">
-                <label for="Romanji">Romanji:</label>
-                <input type="text" name="romanji" id="romanji">
+                <label for="romanji">Romanji:</label>
+                <input type="text" name="romanji" id="romanji" required>
             </section>
             <section class="field">
-                <label for="Significado">Significado:</label>
-                <input type="text" name="caption" id="caption">
+                <label for="significado">Significado:</label>
+                <input type="text" name="significado" id="significado" required>
             </section>
-            <input type="button" value="Adicionar" onclick="createKanji()">
+            <section class="field">
+                <label for="uso">Uso:</label>
+                <input type="text" name="uso" id="uso" required>
+            </section>
+            <section class="field-buttons">
+            		<input type="button" value="Adicionar" onclick="createKanji()">
+            		<input type="button" value="cancelar" onclick="cancelForm()">
+            </section>
         </form>
     </header>
     <section>
         <article class="kanji-box">
-            <aside>
-                <h3 class="kanji-item">Hiragana</h3>
-                <p class="kanji-caption">jytf</p>
-            </aside>
-            <aside>
-                <h3 class="kanji-item">Romanji</h3>
-                <p class="kanji-caption">hngcjh</p>
-            </aside>
-            <aside>
-                <h3 class="kanji-item">Caption</h3>
-                <p class="kanji-caption">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
-            </aside>
+            <section class="top-box">
+            	<article>
+        	  		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU" alt="kanji">
+        	  	</article>
+        	  	<article>
+                    <aside>
+                        <h3 class="kanji-item">Hiragana</h3>
+                        <p class="kanji-caption">jytf</p>
+                    </aside>
+                    <aside>
+                        <h3 class="kanji-item">Romanji</h3>
+                        <p class="kanji-caption">hngcjh</p>
+                    </aside>
+                </article>
+            </section>
+            <section class="bottom-box">
+            	<aside>
+            	    <h3 class="kanji-item">Significado literal</h3>
+           	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                </aside>
+                <aside>
+         	        <h3 class="kanji-item">Uso</h3>
+        	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                </aside>
+            </section>
         </article>
         <article class="kanji-box">
-            <aside>
-                <h3 class="kanji-item">Hiragana</h3>
-                <p class="kanji-caption">jytf</p>
-            </aside>
-            <aside>
-                <h3 class="kanji-item">Romanji</h3>
-                <p class="kanji-caption">hngcjh</p>
-            </aside>
-            <aside>
-                <h3 class="kanji-item">Caption</h3>
-                <p class="kanji-caption">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
-            </aside>
+        	<section class="top-box">
+        		<article>
+        	  		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU" alt="kanji">
+        	    </article>
+        	  	<article>
+                    <aside>
+                        <h3 class="kanji-item">Hiragana</h3>
+                        <p class="kanji-caption">jytf</p>
+                    </aside>
+                    <aside>
+                        <h3 class="kanji-item">Romanji</h3>
+                        <p class="kanji-caption">hngcjh</p>
+                    </aside>
+                </article>
+            </section>
+            <section class="bottom-box">
+            	<aside>
+            	    <h3 class="kanji-item">Significado literal</h3>
+           	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                </aside>
+                <aside>
+         	        <h3 class="kanji-item">Uso</h3>
+        	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                </aside>
+            </section>
         </article>
     </section>
     <script src="kanjicionario.js"></script>
