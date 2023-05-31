@@ -1,14 +1,27 @@
 const formBtn = document.querySelector("#form-button")
 const form = document.querySelector(".form")
+const inputFile = document.querySelector("#file")
+const fileTypes = [
+    "image/apng",
+    "image/bmp",
+    "image/gif",
+    "image/jpeg",
+    "image/pjpeg",
+    "image/png",
+    "image/svg+xml",
+    "image/tiff",
+    "image/webp",
+    "image/x-icon"
+]
 
 class makeKanji {
-    constructor(hira, roma, sign, usso, nB) {
+    constructor(img, hira, roma, sign, usso, nB) {
         document.body.children[3].appendChild(nB)
         nB.classList.add('kanji-box')
         nB.innerHTML = `
           <section class="top-box">
                 <article>
-        	  		<img src="#" alt="kanji">
+        	  		<img src="${img}" alt="kanji">
         	    </article>
         	  	<article>
                     <aside>
@@ -37,13 +50,19 @@ class makeKanji {
 
 function createKanji() {
     console.log("criação de Kanji requerida")
+    const file = inputFile.files[0]
     const hir = document.querySelector("#hiragana").value
     const rom = document.querySelector("#romanji").value
     const sig = document.querySelector("#significado").value
     const uso = document.querySelector("#uso").value
     const newBox = document.createElement("article")
 
-    const kanji = new makeKanji(hir, rom, sig, uso, newBox)
+    if (validateFileType(file)) {
+        const imgSrc = URL.createObjectURL(file)
+        const kanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
+    }
+    
+    
 
     const formInterval = setInterval(() => {
         form.classList.add("open")
@@ -62,4 +81,12 @@ function cancelForm() {
         form.classList.add("open")
         clearInterval(formInterval)
     }, 200)
+}
+
+function validateFileType(file) {
+    if (fileTypes.includes(file.type)) {
+        return true
+    } else {
+        console.error("file type not accepted")
+    }
 }
