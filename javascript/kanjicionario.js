@@ -1,5 +1,6 @@
 const formBtn = document.querySelector("#form-button")
-const form = document.querySelector(".form")
+const formBox = document.querySelector(".form")
+const form = document.querySelector("form")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
     "image/apng",
@@ -49,6 +50,7 @@ class makeKanji {
 }
 
 function createKanji() {
+
     console.log("criação de Kanji requerida")
     const file = inputFile.files[0]
     const hir = document.querySelector("#hiragana").value
@@ -65,20 +67,21 @@ function createKanji() {
     
 
     const formInterval = setInterval(() => {
-        form.classList.add("open")
+        formBox.classList.add("open")
+        form.reset()
         clearInterval(formInterval)
     }, 200)
 }
 
 function openForm() {
     console.log("abrir")
-    form.classList.remove("open")
+    formBox.classList.remove("open")
 }
 
 function cancelForm() {
 	  console.log("fechar")
 	  formInterval = setInterval(() => {
-        form.classList.add("open")
+        formBox.classList.add("open")
         clearInterval(formInterval)
     }, 200)
 }
