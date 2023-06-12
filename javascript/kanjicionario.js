@@ -82,6 +82,7 @@ function cancelForm() {
 	  console.log("fechar")
 	  formInterval = setInterval(() => {
         formBox.classList.add("open")
+        form.reset()
         clearInterval(formInterval)
     }, 200)
 }
