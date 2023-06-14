@@ -17,6 +17,7 @@
             background-color: firebrick;
             color: white;
             padding: 0.7em 1em;
+            box-shadow: 0 2px 4px #910e0e;
         }
         #name {
             font-weight: bold;

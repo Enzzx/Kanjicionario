@@ -95,6 +95,30 @@
             </section>
         </article>
     </section>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+        /*
+        https://console.firebase.google.com/project/kanjicionario-f2aad/firestore/data/~2Fusers?hl=pt-br&view=panel-view&scopeType=collection&scopeName=%2Fusers&query=
+
+        https://firebase.google.com/docs/firestore/manage-data/add-data?hl=pt&authuser=0
+
+        https://firebase.google.com/docs/reference/js/firestore_?hl=pt-br
+        */
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyA8tJHiThJC1gxfArblvwAKinwYzNtxV0o",
+          authDomain: "kanjicionario-f2aad.firebaseapp.com",
+          projectId: "kanjicionario-f2aad",
+          storageBucket: "kanjicionario-f2aad.appspot.com",
+          messagingSenderId: "57084171229",
+          appId: "1:57084171229:web:b9fd894f43aa813ec65c34"
+        };
+      
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+      </script>
     <script src="javascript/kanjicionario.js"></script>
 </body>
 </html>
