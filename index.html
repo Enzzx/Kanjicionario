@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>Kanjicionário</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <nav>
         <p id="name"><span>K</span>anjicionário</p>
@@ -16,7 +18,7 @@
     <header class="form open">
         <h2>Adicionar Kanji</h2>
         <form action="#" method="get">
-            <input type="file" name="file" id="file" accept="image/*">  
+            <input type="file" name="file" id="file" accept="image/*">
             <section class="field">
                 <label for="hiragana">Hiragana:</label>
                 <input type="text" name="hiragana" id="hiragana" required>
@@ -34,18 +36,19 @@
                 <input type="text" name="uso" id="uso" required>
             </section>
             <section class="field-buttons">
-            		<input type="button" value="Adicionar" onclick="createKanji()">
-            		<input type="button" value="cancelar" onclick="cancelForm()">
+                <input type="button" value="Adicionar" onclick="createKanji()">
+                <input type="button" value="cancelar" onclick="cancelForm()">
             </section>
         </form>
     </header>
     <section>
         <article class="kanji-box">
             <section class="top-box">
-            	<article>
-        	  		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU" alt="kanji">
-        	  	</article>
-        	  	<article>
+                <article>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU"
+                        alt="kanji">
+                </article>
+                <article>
                     <aside>
                         <h3 class="kanji-item">Hiragana</h3>
                         <p class="kanji-caption">jytf</p>
@@ -57,22 +60,23 @@
                 </article>
             </section>
             <section class="bottom-box">
-            	<aside>
-            	    <h3 class="kanji-item">Significado literal</h3>
-           	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                <aside>
+                    <h3 class="kanji-item">Significado literal</h3>
+                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
                 </aside>
                 <aside>
-         	        <h3 class="kanji-item">Uso</h3>
-        	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                    <h3 class="kanji-item">Uso</h3>
+                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
                 </aside>
             </section>
         </article>
         <article class="kanji-box">
-        	<section class="top-box">
-        		<article>
-        	  		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU" alt="kanji">
-        	    </article>
-        	  	<article>
+            <section class="top-box">
+                <article>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU"
+                        alt="kanji">
+                </article>
+                <article>
                     <aside>
                         <h3 class="kanji-item">Hiragana</h3>
                         <p class="kanji-caption">jytf</p>
@@ -84,41 +88,17 @@
                 </article>
             </section>
             <section class="bottom-box">
-            	<aside>
-            	    <h3 class="kanji-item">Significado literal</h3>
-           	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                <aside>
+                    <h3 class="kanji-item">Significado literal</h3>
+                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
                 </aside>
                 <aside>
-         	        <h3 class="kanji-item">Uso</h3>
-        	        <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
+                    <h3 class="kanji-item">Uso</h3>
+                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
                 </aside>
             </section>
         </article>
     </section>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-        import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-        /*
-        https://console.firebase.google.com/project/kanjicionario-f2aad/firestore/data/~2Fusers?hl=pt-br&view=panel-view&scopeType=collection&scopeName=%2Fusers&query=
-
-        https://firebase.google.com/docs/firestore/manage-data/add-data?hl=pt&authuser=0
-
-        https://firebase.google.com/docs/reference/js/firestore_?hl=pt-br
-        */
-      
-        const firebaseConfig = {
-          apiKey: "AIzaSyA8tJHiThJC1gxfArblvwAKinwYzNtxV0o",
-          authDomain: "kanjicionario-f2aad.firebaseapp.com",
-          projectId: "kanjicionario-f2aad",
-          storageBucket: "kanjicionario-f2aad.appspot.com",
-          messagingSenderId: "57084171229",
-          appId: "1:57084171229:web:b9fd894f43aa813ec65c34"
-        };
-      
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-      </script>
-    <script src="javascript/kanjicionario.js"></script>
+    <script src="src/index.js"></script>
 </body>
 </html>
