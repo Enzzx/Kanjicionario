@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanjicionário</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
     <nav>
         <p id="name"><span>K</span>anjicionário</p>
@@ -97,6 +100,15 @@
             </section>
         </article>
     </section>
+    <script>
+        //https://supabase.com/dashboard/project/pcgsqjxyesjuhqxkmtqo
+        //https://supabase.com/docs
+        
+        const supabaseUrl = 'https://pcgsqjxyesjuhqxkmtqo.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZ3Nxanh5ZXNqdWhxeGttdHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODcyMDQyMjUsImV4cCI6MjAwMjc4MDIyNX0.uodcFlTEUtMUEcqXNV7mPI61qxcKDhBCBzfWO-e0en0'
+        var supabase = supabase.createClient(supabaseUrl, supabaseKey)
+    </script>
     <script src="src/index.js"></script>
 </body>
+
 </html>
