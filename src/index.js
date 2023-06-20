@@ -1,3 +1,4 @@
+const newBox = document.createElement("article")
 const formBtn = document.querySelector("#form-button")
 const formBox = document.querySelector(".form")
 const form = document.querySelector("form")
@@ -85,4 +86,12 @@ function cancelForm() {
         form.reset()
         clearInterval(formInterval)
     }, 200)
+}
+
+function validateFileType(file) {
+    if (fileTypes.includes(file.type)) {
+        return true
+    } else {
+        console.error("file type not accepted")
+    }
 }
