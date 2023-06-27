@@ -1,26 +1,28 @@
 const newBox = document.createElement("article")
 const formBtn = document.querySelector("#form-button")
+const loginBox = document.querySelector(".login")
 const formBox = document.querySelector(".form")
-const form = document.querySelector("form")
+const userForm = document.querySelector("#userForm")
+const kanjiForm = document.querySelector("#kanjiForm")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
-    "image/apng",
-    "image/bmp",
-    "image/gif",
-    "image/jpeg",
-    "image/pjpeg",
-    "image/png",
-    "image/svg+xml",
-    "image/tiff",
-    "image/webp",
-    "image/x-icon"
+	"image/apng",
+	"image/bmp",
+	"image/gif",
+	"image/jpeg",
+	"image/pjpeg",
+	"image/png",
+	"image/svg+xml",
+	"image/tiff",
+	"image/webp",
+	"image/x-icon"
 ]
-
+// - - - - -   FORMULÁrio   - - - - -
 class makeKanji {
-    constructor(img, hira, roma, sign, usso, nB) {
-        document.body.children[3].appendChild(nB)
-        nB.classList.add('kanji-box')
-        nB.innerHTML = `
+	constructor(img, hira, roma, sign, usso, nB) {
+		document.body.children[4].appendChild(nB)
+		nB.classList.add("kanji-box")
+		nB.innerHTML = `
   <section class="top-box">
         <article>
               <img src="${img}" alt="kanji">
@@ -47,51 +49,74 @@ class makeKanji {
         </aside>
     </section>
 `
-    }
+	}
 }
 
 function createKanji() {
 
-    console.log("criação de Kanji requerida")
-    const file = inputFile.files[0]
-    const hir = document.querySelector("#hiragana").value
-    const rom = document.querySelector("#romanji").value
-    const sig = document.querySelector("#significado").value
-    const uso = document.querySelector("#uso").value
-    const newBox = document.createElement("article")
+	console.log("criação de Kanji requerida")
+	const file = inputFile.files[0]
+	const hir = document.querySelector("#hiragana").value
+	const rom = document.querySelector("#romanji").value
+	const sig = document.querySelector("#significado").value
+	const uso = document.querySelector("#uso").value
 
-    if (validateFileType(file)) {
-        const imgSrc = URL.createObjectURL(file)
-        const kanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
-    }
-
+	if (validateFileType(file)) {
+		const imgSrc = URL.createObjectURL(file)
+		const kanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
+	}
 
 
-    const formInterval = setInterval(() => {
-        formBox.classList.add("open")
-        form.reset()
-        clearInterval(formInterval)
-    }, 200)
+
+	const formInterval = setInterval(() => {
+		formBox.classList.add("close")
+		kanjiForm.reset()
+		clearInterval(formInterval)
+	}, 200)
 }
 
 function openForm() {
-    console.log("abrir")
-    formBox.classList.remove("open")
+	console.log("abrir formulário de criação de kanji")
+	formBox.classList.remove("close")
 }
 
 function cancelForm() {
-    console.log("fechar")
-    formInterval = setInterval(() => {
-        formBox.classList.add("open")
-        form.reset()
-        clearInterval(formInterval)
-    }, 200)
+	console.log("fechar")
+	const formInterval = setInterval(() => {
+		loginBox.classList.add("close")
+		formBox.classList.add("close")
+		userForm.reset()
+		kanjiForm.reset()
+		clearInterval(formInterval)
+	}, 200)
 }
 
 function validateFileType(file) {
-    if (fileTypes.includes(file.type)) {
-        return true
-    } else {
-        console.error("file type not accepted")
-    }
+	if (fileTypes.includes(file.type)) {
+		return true
+	} else {
+		console.error("file type not accepted")
+	}
+}
+
+// - - - - -   USUÁRIO   - - - - -
+
+function openLogin() {
+	console.log("abrir formulário de login")
+	loginBox.classList.remove("close")
+}
+
+function enterAccount() {
+	const email = document.querySelector("#email").value
+	const password = document.querySelector("#password").value
+
+	loadData(email)
+}
+
+async function loadData(email) {
+	let { data: posts, error } = await supabase
+		.from('users')
+		.select(`${email}`)
+	console.log(error)
+	console.log(posts)
 }

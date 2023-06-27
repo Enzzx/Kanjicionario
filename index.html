@@ -9,16 +9,35 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
     <nav>
         <p id="name"><span>K</span>anjicionário</p>
-        <p id="form-button" onclick="openForm()">add kanji</p>
+        <div>
+            <p id="form-button" onclick="openForm()">add kanji</p>
+            <img src="images/user.svg" onclick="openLogin()">
+        </div>
     </nav>
     <h1>Número de Kanjis:</h1>
-    <header class="form open">
+    <div class="login close">
+        <h2>Acesse sua conta</h2>
+        <form id="userForm" action="#" method="get">
+            <section class="field">
+                <label for="name">Email:</label>
+                <input type="text" name="email" id="email">
+            </section>
+            <section class="field">
+                <label for="name">Senha:</label>
+                <input type="text" name="password" id="password">
+            </section>
+            <section class="field-buttons">
+                <input type="button" value="Entrar" onclick="enterAccount()">
+                <input type="button" value="Sair" onclick="cancelForm()">
+            </section>
+        </form>
+    </div>
+    <div class="form close">
         <h2>Adicionar Kanji</h2>
-        <form action="#" method="get">
+        <form id="kanjiForm" action="#" method="get">
             <input type="file" name="file" id="file" accept="image/*">
             <section class="field">
                 <label for="hiragana">Hiragana:</label>
@@ -34,14 +53,14 @@
             </section>
             <section class="field">
                 <label for="uso">Uso:</label>
-                <input type="text" name="uso" id="uso" required>
+                <textarea name="uso" id="uso" rows="3" cols="20" required></textarea>
             </section>
             <section class="field-buttons">
                 <input type="button" value="Adicionar" onclick="createKanji()">
-                <input type="button" value="cancelar" onclick="cancelForm()">
+                <input type="button" value="Cancelar" onclick="cancelForm()">
             </section>
         </form>
-    </header>
+    </div>
     <section>
         <article class="kanji-box">
             <section class="top-box">
@@ -101,14 +120,12 @@
         </article>
     </section>
     <script>
-        //https://supabase.com/dashboard/project/pcgsqjxyesjuhqxkmtqo
-        //https://supabase.com/docs
         
         const supabaseUrl = 'https://pcgsqjxyesjuhqxkmtqo.supabase.co'
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZ3Nxanh5ZXNqdWhxeGttdHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODcyMDQyMjUsImV4cCI6MjAwMjc4MDIyNX0.uodcFlTEUtMUEcqXNV7mPI61qxcKDhBCBzfWO-e0en0'
         var supabase = supabase.createClient(supabaseUrl, supabaseKey)
+
     </script>
     <script src="src/index.js"></script>
 </body>
-
 </html>
