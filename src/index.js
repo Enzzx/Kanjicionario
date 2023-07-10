@@ -1,8 +1,10 @@
 const newBox = document.createElement("article")
 const formBtn = document.querySelector("#form-button")
 const loginBox = document.querySelector(".login")
+const signBox = document.querySelector(".sign")
 const formBox = document.querySelector(".form")
 const userForm = document.querySelector("#userForm")
+const signForm = document.querySelector("#signForm")
 const kanjiForm = document.querySelector("#kanjiForm")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
@@ -17,10 +19,10 @@ const fileTypes = [
 	"image/webp",
 	"image/x-icon"
 ]
-// - - - - -   FORMULÁrio   - - - - -
+// - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
 	constructor(img, hira, roma, sign, usso, nB) {
-		document.body.children[4].appendChild(nB)
+		document.body.children[5].appendChild(nB)
 		nB.classList.add("kanji-box")
 		nB.innerHTML = `
   <section class="top-box">
@@ -84,8 +86,11 @@ function cancelForm() {
 	console.log("fechar")
 	const formInterval = setInterval(() => {
 		loginBox.classList.add("close")
+		signBox.classList.add("close")
 		formBox.classList.add("close")
+		
 		userForm.reset()
+		signForm.reset()
 		kanjiForm.reset()
 		clearInterval(formInterval)
 	}, 200)
@@ -101,22 +106,39 @@ function validateFileType(file) {
 
 // - - - - -   USUÁRIO   - - - - -
 
+function openSign() {
+	console.log("abrir formulário de sign in")
+	loginBox.classList.add("close")
+	signBox.classList.remove("close")
+}
+
 function openLogin() {
 	console.log("abrir formulário de login")
 	loginBox.classList.remove("close")
 }
 
 function enterAccount() {
-	const email = document.querySelector("#email").value
+	const user = document.querySelector("#userName").value
 	const password = document.querySelector("#password").value
+	console.log("entrar na conta")
 
-	loadData(email)
+	//loadData(email)
 }
 
-async function loadData(email) {
-	let { data: posts, error } = await supabase
+let data
+async function loadData(email, senha) {
+	let { data, error } = await supabase
 		.from('users')
-		.select(`${email}`)
-	console.log(error)
-	console.log(posts)
-}
+		.select()
+		.eq('user_mail', email)
+		.eq('user_password', senha)
+		.single()
+	
+	if (data) {
+		//console.log(data)
+		return data
+	}
+	if (error) {
+		console.log(error)
+	}
+			}
