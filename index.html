@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanjicionário</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="Example.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -22,16 +22,35 @@
         <h2>Acesse sua conta</h2>
         <form id="userForm" action="#" method="get">
             <section class="field">
-                <label for="name">Email:</label>
-                <input type="text" name="email" id="email">
+                <label for="userName">Usuário:</label>
+                <input type="text" name="userName" id="userName">
             </section>
             <section class="field">
-                <label for="name">Senha:</label>
+                <label for="password">Senha:</label>
                 <input type="text" name="password" id="password">
             </section>
             <section class="field-buttons">
                 <input type="button" value="Entrar" onclick="enterAccount()">
                 <input type="button" value="Sair" onclick="cancelForm()">
+            </section>
+        </form>
+        <p>Ainda não possui uma conta?</p>
+        <button onClick="openSign()">Criar agora</button>
+    </div>
+    <div class="sign close">
+        <h2>Crie uma nova conta</h2>
+        <form id="signForm" action="#" method="get">
+            <section class="field">
+                <label for="newName">Novo usuário:</label>
+                <input type="text" name="newName" id="newName">
+            </section>
+            <section class="field">
+                <label for="newPassword">Nova senha:</label>
+                <input type="text" name="newPassword" id="newPassword">
+            </section>
+            <section class="field-buttons">
+                <input type="button" value="Criar" onclick="createAccount()">
+                <input type="button" value="Cancelar" onclick="cancelForm()">
             </section>
         </form>
     </div>
@@ -126,6 +145,6 @@
         var supabase = supabase.createClient(supabaseUrl, supabaseKey)
 
     </script>
-    <script src="src/index.js"></script>
+    <script src="Example.js"></script>
 </body>
 </html>
