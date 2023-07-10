@@ -45,6 +45,26 @@
             margin: 0 0.5em;
             padding: 1em 0 0 0.5em;
         }
+        
+        .login > p {
+        	color: #555555;
+        	font-size: 0.6em;
+        	text-align: center;
+        }
+        .login > button {
+        	display: block;
+        	background-color: #5577ff;
+        	color: white;
+        	font-size: 1.2em;
+        	margin: auto;
+        	padding: 0.5em 1em;
+        	border: none;
+        	border-radius: 5px;
+        	box-shadow: 0 0 10px #3333ff77;
+        }
+        #userForm {
+        	margin-bottom: 2em;
+        }
 
         #kanjiForm textarea {
             resize: none;
@@ -54,7 +74,7 @@
             opacity: 0;
             visibility: hidden;
         }
-        .form, .login {
+        .form, .login, .sign {
             position: fixed;
             transition: 50% 50%;
             top: 50%;
@@ -153,4 +173,4 @@
             .kanji-box {
                 flex: 100%;
             }
-        }
+}
