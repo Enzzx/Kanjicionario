@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kanjicionário</title>
-    <link rel="stylesheet" href="Example.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <nav>
@@ -20,7 +19,7 @@
     <h1>Número de Kanjis:</h1>
     <div class="login close">
         <h2>Acesse sua conta</h2>
-        <form id="userForm" action="#" method="get">
+        <form id="userForm">
             <section class="field">
                 <label for="userName">Usuário:</label>
                 <input type="text" name="userName" id="userName">
@@ -30,7 +29,7 @@
                 <input type="text" name="password" id="password">
             </section>
             <section class="field-buttons">
-                <input type="button" value="Entrar" onclick="enterAccount()">
+                <input type="submit" value="Entrar" id="enterAccount">
                 <input type="button" value="Sair" onclick="cancelForm()">
             </section>
         </form>
@@ -49,7 +48,7 @@
                 <input type="text" name="newPassword" id="newPassword">
             </section>
             <section class="field-buttons">
-                <input type="button" value="Criar" onclick="createAccount()">
+                <input type="submit" value="Criar" id="createAccount">
                 <input type="button" value="Cancelar" onclick="cancelForm()">
             </section>
         </form>
@@ -138,13 +137,6 @@
             </section>
         </article>
     </section>
-    <script>
-        
-        const supabaseUrl = 'https://pcgsqjxyesjuhqxkmtqo.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZ3Nxanh5ZXNqdWhxeGttdHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODcyMDQyMjUsImV4cCI6MjAwMjc4MDIyNX0.uodcFlTEUtMUEcqXNV7mPI61qxcKDhBCBzfWO-e0en0'
-        var supabase = supabase.createClient(supabaseUrl, supabaseKey)
-
-    </script>
-    <script src="Example.js"></script>
+    <script src="src/script.js"></script>
 </body>
 </html>

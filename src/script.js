@@ -1,7 +1,9 @@
 const newBox = document.createElement("article")
 const formBtn = document.querySelector("#form-button")
 const loginBox = document.querySelector(".login")
+const enterAccount = document.querySelector("#enterAccount")
 const signBox = document.querySelector(".sign")
+const createAccount = document.querySelector("#createAccount")
 const formBox = document.querySelector(".form")
 const userForm = document.querySelector("#userForm")
 const signForm = document.querySelector("#signForm")
@@ -49,8 +51,7 @@ class makeKanji {
              <h3 class="kanji-item">Uso</h3>
             <p class="kanji-caption">${usso}</p>
         </aside>
-    </section>
-`
+    </section>`
 	}
 }
 
@@ -88,7 +89,7 @@ function cancelForm() {
 		loginBox.classList.add("close")
 		signBox.classList.add("close")
 		formBox.classList.add("close")
-		
+
 		userForm.reset()
 		signForm.reset()
 		kanjiForm.reset()
@@ -117,28 +118,63 @@ function openLogin() {
 	loginBox.classList.remove("close")
 }
 
-function enterAccount() {
-	const user = document.querySelector("#userName").value
-	const password = document.querySelector("#password").value
-	console.log("entrar na conta")
+enterAccount.addEventListener('click', async (e) => {
+	e.preventDefault()
 
-	//loadData(email)
-}
+	const user = document.querySelector('#userName').value
+	const password = document.querySelector('#password').value
 
-let data
-async function loadData(email, senha) {
-	let { data, error } = await supabase
-		.from('users')
-		.select()
-		.eq('user_mail', email)
-		.eq('user_password', senha)
-		.single()
-	
-	if (data) {
-		//console.log(data)
-		return data
+	const data = { user, password }
+	const head = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data)
 	}
-	if (error) {
-		console.log(error)
+	try {
+		const requisition = await fetch('/logIn', head)
+		const result = await requisition.json()
+
+		console.log(result.message)
+	} catch (err) {
+		console.log(err)
 	}
-			}
+})
+
+createAccount.addEventListener('click', async (e) => {
+	e.preventDefault()
+
+	const newUser = document.querySelector('#newName').value
+	const newPassword = document.querySelector('#newPassword').value
+
+	const data = { newUser, newPassword }
+	const head = {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data)
+	}
+	try {
+		const requisition = await fetch('/signUp', head)
+		const result = await requisition.json()
+
+		let message = result.message
+		let autoLogin = result.autoLogin
+		console.log(message)
+		console.log(autoLogin)
+		/*if (autoLogin == true) {
+			console.log("tá no if")
+			async () => {
+				console.log('táindo')
+                try {
+                    const doLogin = await fetch('/logIn', head)
+                    const loginResponse = await doLogin.json()
+
+					console.log(loginResponse.message)
+				} catch (err) {
+					console.log(err)
+				}
+            }
+		}*/
+	} catch (err) {
+		console.log(err)
+	}
+})
