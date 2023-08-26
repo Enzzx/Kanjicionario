@@ -79,12 +79,12 @@ function createKanji() {
 }
 
 function openForm() {
-	console.log("abrir formulário de criação de kanji")
 	formBox.classList.remove("close")
+	loginBox.classList.add("close")
+	signBox.classList.add("close")
 }
 
 function cancelForm() {
-	console.log("fechar")
 	const formInterval = setInterval(() => {
 		loginBox.classList.add("close")
 		signBox.classList.add("close")
@@ -108,14 +108,15 @@ function validateFileType(file) {
 // - - - - -   USUÁRIO   - - - - -
 
 function openSign() {
-	console.log("abrir formulário de sign in")
 	loginBox.classList.add("close")
+	formBox.classList.add("close")
 	signBox.classList.remove("close")
 }
 
 function openLogin() {
-	console.log("abrir formulário de login")
 	loginBox.classList.remove("close")
+	signBox.classList.add("close")
+	formBox.classList.add("close")
 }
 
 enterAccount.addEventListener('click', async (e) => {
@@ -146,8 +147,8 @@ createAccount.addEventListener('click', async (e) => {
 	const newUser = document.querySelector('#newName').value
 	const newPassword = document.querySelector('#newPassword').value
 
-	const data = { newUser, newPassword }
-	const head = {
+	let data = { newUser, newPassword }
+	let head = {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(data)
@@ -159,11 +160,18 @@ createAccount.addEventListener('click', async (e) => {
 		let message = result.message
 		let autoLogin = result.autoLogin
 		console.log(message)
-		console.log(autoLogin)
-		/*if (autoLogin == true) {
-			console.log("tá no if")
-			async () => {
-				console.log('táindo')
+		if (autoLogin) {
+			async function autoLog() {
+				console.log('loging automático')
+
+				const user = newUser
+				const password = newPassword
+				data = { user, password }
+				head = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data)
+				}
                 try {
                     const doLogin = await fetch('/logIn', head)
                     const loginResponse = await doLogin.json()
@@ -173,8 +181,9 @@ createAccount.addEventListener('click', async (e) => {
 					console.log(err)
 				}
             }
-		}*/
+			autoLog()
+		}
 	} catch (err) {
-		console.log(err)
+		throw err
 	}
 })
