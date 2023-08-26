@@ -21,6 +21,8 @@ const fileTypes = [
 	"image/webp",
 	"image/x-icon"
 ]
+
+
 // - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
 	constructor(img, hira, roma, sign, usso, nB) {
@@ -82,6 +84,8 @@ function openForm() {
 	formBox.classList.remove("close")
 	loginBox.classList.add("close")
 	signBox.classList.add("close")
+
+	resetAll()
 }
 
 function cancelForm() {
@@ -90,9 +94,7 @@ function cancelForm() {
 		signBox.classList.add("close")
 		formBox.classList.add("close")
 
-		userForm.reset()
-		signForm.reset()
-		kanjiForm.reset()
+		resetAll()
 		clearInterval(formInterval)
 	}, 200)
 }
@@ -105,19 +107,33 @@ function validateFileType(file) {
 	}
 }
 
+
 // - - - - -   USUÁRIO   - - - - -
 
 function openSign() {
 	loginBox.classList.add("close")
 	formBox.classList.add("close")
 	signBox.classList.remove("close")
+	
+	resetAll()
 }
 
 function openLogin() {
 	loginBox.classList.remove("close")
 	signBox.classList.add("close")
 	formBox.classList.add("close")
+	
+	resetAll()
 }
+
+function resetAll() {
+	userForm.reset()
+	signForm.reset()
+	kanjiForm.reset()
+}
+
+
+// - - -  REQUISIÇÕES DA DADOS  - - -
 
 enterAccount.addEventListener('click', async (e) => {
 	e.preventDefault()
@@ -172,15 +188,15 @@ createAccount.addEventListener('click', async (e) => {
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(data)
 				}
-                try {
-                    const doLogin = await fetch('/logIn', head)
-                    const loginResponse = await doLogin.json()
+				try {
+					const doLogin = await fetch('/logIn', head)
+					const loginResponse = await doLogin.json()
 
 					console.log(loginResponse.message)
 				} catch (err) {
 					console.log(err)
 				}
-            }
+			}
 			autoLog()
 		}
 	} catch (err) {

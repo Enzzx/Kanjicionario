@@ -86,11 +86,11 @@ app.post('/signUp', (req, res) => {
             }
             return res.status(401).json(response)
         }
-        
+
         con.query(doUser, [newUser, newPassword], (err, result) => {
             if (err) throw err;
             console.log(`${result.affectedRows} novo usuário foi criado`)
-            
+
             const response = {
                 message: 'novo usuário criado',
                 autoLogin: true
