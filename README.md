@@ -1,6 +1,7 @@
 # Kanjicionario
-O Kanjicionário é site que funciona como um dicionário de kanjis, onde o usuário pode adicionar informações sobre determinado kanji e adicioná-lo, onde aparecerão todos objetos criados na janela inicial da página.
- ---
+
+O Kanjicionário é um dicionário de kanjis. Os usuários podem adicionar informações sobre um kanji específico e adicioná-lo. Onde todos os objetos criados pelos usuários aparecerão na janela inicial da página.
+ 
 O site foi criado usando:
 * HTML
 * CSS
