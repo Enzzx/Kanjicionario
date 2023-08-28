@@ -1,10 +1,10 @@
-const newBox = document.createElement("article")
-const formBtn = document.querySelector("#form-button")
+let hasAcc = false
 const loginBox = document.querySelector(".login")
 const enterAccount = document.querySelector("#enterAccount")
 const signBox = document.querySelector(".sign")
 const createAccount = document.querySelector("#createAccount")
-const formBox = document.querySelector(".form")
+const kanjiBox = document.querySelector(".form")
+const createKanji = document.querySelector("#createKanji")
 const userForm = document.querySelector("#userForm")
 const signForm = document.querySelector("#signForm")
 const kanjiForm = document.querySelector("#kanjiForm")
@@ -57,46 +57,58 @@ class makeKanji {
 	}
 }
 
-function createKanji() {
+createKanji.addEventListener('click', async (e) => {
+	e.preventDefault()
 
-	console.log("criação de Kanji requerida")
+	console.log("criação de Kanji requisitada")
 	const file = inputFile.files[0]
-	const hir = document.querySelector("#hiragana").value
-	const rom = document.querySelector("#romanji").value
-	const sig = document.querySelector("#significado").value
-	const uso = document.querySelector("#uso").value
 
 	if (validateFileType(file)) {
+		//newBox vai pra função de objetificar o  kanji
+		let newBox = document.createElement("article")
+		const hir = document.querySelector("#hiragana").value
+		const rom = document.querySelector("#romanji").value
+		const mean = document.querySelector("#significado").value
+		const uso = document.querySelector("#uso").value
 		const imgSrc = URL.createObjectURL(file)
-		const kanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
+
+		const data = { hir, rom, mean, uso, imgSrc }
+		const head = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		}
+
+		try {
+			const requisition = await fetch('/kanjiCreation', head)
+			const result = await requisition.json()
+
+			console.log(result)
+		} catch (err) {
+			throw err
+		}
+		//const kanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
 	}
 
 
 
-	const formInterval = setInterval(() => {
-		formBox.classList.add("close")
-		kanjiForm.reset()
-		clearInterval(formInterval)
-	}, 200)
-}
+	kanjiBox.classList.add("close")
+	kanjiForm.reset()
+})
 
 function openForm() {
-	formBox.classList.remove("close")
-	loginBox.classList.add("close")
-	signBox.classList.add("close")
-
-	resetAll()
+	if (hasAcc) {
+		resetAll()
+		kanjiBox.classList.remove("close")
+	} else {
+		console.log('cade sua conta')
+	}
 }
 
 function cancelForm() {
-	const formInterval = setInterval(() => {
-		loginBox.classList.add("close")
-		signBox.classList.add("close")
-		formBox.classList.add("close")
+	
 
-		resetAll()
-		clearInterval(formInterval)
-	}, 200)
+	resetAll()
 }
 
 function validateFileType(file) {
@@ -111,22 +123,20 @@ function validateFileType(file) {
 // - - - - -   USUÁRIO   - - - - -
 
 function openSign() {
-	loginBox.classList.add("close")
-	formBox.classList.add("close")
-	signBox.classList.remove("close")
-	
 	resetAll()
+	signBox.classList.remove("close")
 }
 
 function openLogin() {
-	loginBox.classList.remove("close")
-	signBox.classList.add("close")
-	formBox.classList.add("close")
-	
 	resetAll()
+	loginBox.classList.remove("close")
 }
 
 function resetAll() {
+	loginBox.classList.add("close")
+	signBox.classList.add("close")
+	kanjiBox.classList.add("close")
+
 	userForm.reset()
 	signForm.reset()
 	kanjiForm.reset()
@@ -151,9 +161,14 @@ enterAccount.addEventListener('click', async (e) => {
 		const requisition = await fetch('/logIn', head)
 		const result = await requisition.json()
 
+		hasAcc = result.hasAcc
 		console.log(result.message)
+		if (hasAcc) {
+			loginBox.classList.add("close")
+			userForm.reset()
+		}
 	} catch (err) {
-		console.log(err)
+		throw err
 	}
 })
 
@@ -178,8 +193,8 @@ createAccount.addEventListener('click', async (e) => {
 		console.log(message)
 		if (autoLogin) {
 			async function autoLog() {
-				console.log('loging automático')
-
+				console.log('login automático')
+				
 				const user = newUser
 				const password = newPassword
 				data = { user, password }
@@ -191,10 +206,15 @@ createAccount.addEventListener('click', async (e) => {
 				try {
 					const doLogin = await fetch('/logIn', head)
 					const loginResponse = await doLogin.json()
-
+					
+					hasAcc = loginResponse.hasAcc
 					console.log(loginResponse.message)
+					if (hasAcc) {
+						signBox.classList.add("close")
+						signForm.reset()
+					}
 				} catch (err) {
-					console.log(err)
+					throw err
 				}
 			}
 			autoLog()

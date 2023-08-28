@@ -35,6 +35,7 @@ app.post("/logIn", (req, res) => {
 
             const response = {
                 message: 'nome e/ou senha de usuário incorreto',
+                hasAcc: false,
                 reachKanjis: false
             }
             return res.status(401).json(response)
@@ -50,6 +51,7 @@ app.post("/logIn", (req, res) => {
 
                 const response = {
                     message: 'nenhum kanji encontrado',
+                    hasAcc: true,
                     reachKanjis: false
                 }
                 return res.status(200).json(response)
@@ -60,6 +62,7 @@ app.post("/logIn", (req, res) => {
 
             const response = {
                 message: 'requisição completa',
+                hasAcc: true,
                 reachKanjis: true,
                 result: result
             }
@@ -67,6 +70,7 @@ app.post("/logIn", (req, res) => {
         })
     })
 })
+
 
 app.post('/signUp', (req, res) => {
     console.log(req.body)
@@ -98,13 +102,34 @@ app.post('/signUp', (req, res) => {
             res.status(200).json(response)
         })
     })
+})
 
+
+app.post('/kanjiCreation', (req, res) => {
+    console.log(req.body)
+
+    const hir = req.body.hir
+    const rom = req.body.rom
+    const mean = req.body.mean
+    const uso = req.body.uso
+    const img = req.body.imgSrc
+    const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, img, id_user) VALUES (?, ?, ?, ?, ?, 1);"
+
+    con.query(doKanji, [hir, rom, mean, uso, img], (err, result) => {
+        if (err) throw err;
+        console.log(`${result.affectedRows} novo kanji criado`)
+
+        const response = {
+            message: 'kanji criado com sucesso'
+        }
+        res.status(200).json(response)
+    })
 
 })
 
 
 app.use((req, res) => {
-    res.status(404).sendFile(__dirname + '/404.html')
+    res.status(404).sendFile(__dirname + '/public/404.html')
 })
 
 app.listen(port, (err) => {
