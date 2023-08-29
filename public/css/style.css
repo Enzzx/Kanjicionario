@@ -85,7 +85,9 @@ h1 {
 
 .form,
 .login,
-.sign {
+.sign,
+.acc,
+.no-acc {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -95,6 +97,21 @@ h1 {
     padding: 2em 1.5em;
     border-radius: 0.8em;
     box-shadow: 1px 1px 15px #00000061;
+}
+
+.acc {
+    font-size: 0.9em;
+    text-align: center;
+    width: 250px;
+}
+.acc section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1em;
+}
+.acc input:last-child {
+    background: #b03838;
 }
 
 .form h2,
@@ -119,14 +136,14 @@ h1 {
     margin-top: 1em;
 }
 
-.field-buttons input {
+.field-buttons input, .acc input {
     background-color: #da6464;
     padding: 0.2em 0.4em;
     border-radius: 0.3em;
     transition: 0.1s;
 }
 
-.field-buttons input:hover {
+.field-buttons input:hover, .acc input:hover {
     background-color: #bcbcbc;
 }
 

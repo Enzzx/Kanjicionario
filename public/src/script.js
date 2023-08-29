@@ -1,4 +1,5 @@
 let hasAcc = false
+let idUser = 0
 const loginBox = document.querySelector(".login")
 const enterAccount = document.querySelector("#enterAccount")
 const signBox = document.querySelector(".sign")
@@ -8,6 +9,8 @@ const createKanji = document.querySelector("#createKanji")
 const userForm = document.querySelector("#userForm")
 const signForm = document.querySelector("#signForm")
 const kanjiForm = document.querySelector("#kanjiForm")
+const acc = document.querySelector(".acc")
+const noAcc = document.querySelector(".no-acc")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
 	"image/apng",
@@ -26,12 +29,12 @@ const fileTypes = [
 // - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
 	constructor(img, hira, roma, sign, usso, nB) {
-		document.body.children[5].appendChild(nB)
+		document.body.children[6].appendChild(nB)
 		nB.classList.add("kanji-box")
 		nB.innerHTML = `
   <section class="top-box">
         <article>
-              <img src="${img}" alt="kanji">
+              <img src="../../../Downloads/488.jpg" alt="kanji">
         </article>
           <article>
             <aside>
@@ -64,7 +67,6 @@ createKanji.addEventListener('click', async (e) => {
 	const file = inputFile.files[0]
 
 	if (validateFileType(file)) {
-		//newBox vai pra função de objetificar o  kanji
 		let newBox = document.createElement("article")
 		const hir = document.querySelector("#hiragana").value
 		const rom = document.querySelector("#romanji").value
@@ -72,7 +74,7 @@ createKanji.addEventListener('click', async (e) => {
 		const uso = document.querySelector("#uso").value
 		const imgSrc = URL.createObjectURL(file)
 
-		const data = { hir, rom, mean, uso, imgSrc }
+		const data = { hir, rom, mean, uso, idUser }
 		const head = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -87,7 +89,7 @@ createKanji.addEventListener('click', async (e) => {
 		} catch (err) {
 			throw err
 		}
-		//const kanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
+		//const doKanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
 	}
 
 
@@ -101,13 +103,12 @@ function openForm() {
 		resetAll()
 		kanjiBox.classList.remove("close")
 	} else {
-		console.log('cade sua conta')
+		resetAll()
+		noAcc.classList.remove('close')
 	}
 }
 
-function cancelForm() {
-	
-
+function closeBox() {
 	resetAll()
 }
 
@@ -128,14 +129,26 @@ function openSign() {
 }
 
 function openLogin() {
+	if (idUser) {
+		acc.classList.remove('close')
+	} else {
+		resetAll()
+		loginBox.classList.remove("close")
+	}
+}
+
+function getOut() {
+	idUser = 0
+	hasAcc = false
 	resetAll()
-	loginBox.classList.remove("close")
 }
 
 function resetAll() {
 	loginBox.classList.add("close")
 	signBox.classList.add("close")
 	kanjiBox.classList.add("close")
+	acc.classList.add('close')
+	noAcc.classList.add('close')
 
 	userForm.reset()
 	signForm.reset()
@@ -161,11 +174,23 @@ enterAccount.addEventListener('click', async (e) => {
 		const requisition = await fetch('/logIn', head)
 		const result = await requisition.json()
 
+		idUser = result.id
 		hasAcc = result.hasAcc
-		console.log(result.message)
+		kanjisObj = result.result
+		console.log(result)
 		if (hasAcc) {
 			loginBox.classList.add("close")
 			userForm.reset()
+			(async () => {
+				kanjisObj.forEach(kanji => {
+					let newBox = document.createElement("article")
+					const hir = kanji.hir
+					const rom = kanji.rom
+					const mean = kanji.mean
+					const uso = kanji.uso
+					const doKanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
+				})
+			})()
 		}
 	} catch (err) {
 		throw err
@@ -194,7 +219,7 @@ createAccount.addEventListener('click', async (e) => {
 		if (autoLogin) {
 			async function autoLog() {
 				console.log('login automático')
-				
+
 				const user = newUser
 				const password = newPassword
 				data = { user, password }
@@ -206,7 +231,8 @@ createAccount.addEventListener('click', async (e) => {
 				try {
 					const doLogin = await fetch('/logIn', head)
 					const loginResponse = await doLogin.json()
-					
+
+					idUser = loginResponse.id
 					hasAcc = loginResponse.hasAcc
 					console.log(loginResponse.message)
 					if (hasAcc) {

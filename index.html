@@ -31,11 +31,20 @@
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Entrar" id="enterAccount">
-                <input type="button" value="Sair" onclick="cancelForm()">
+                <input type="button" value="Sair" onclick="closeBox()">
             </section>
         </form>
         <p>Ainda não possui uma conta?</p>
         <button onClick="openSign()">Criar agora</button>
+    </div>
+    <div class="acc close">
+        <h2>Você já está conectado</h2>
+        <p>O que deseja fazer?</p>
+        <section>
+            <input type="button" value="voltar" onclick="closeBox()">
+            <input type="button" value="Sair da conta" onclick="getOut()">
+            <input type="button" value="Excluir conta">
+        </section>
     </div>
     <div class="sign close">
         <h2>Crie uma nova conta</h2>
@@ -50,9 +59,17 @@
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Criar" id="createAccount">
-                <input type="button" value="Cancelar" onclick="cancelForm()">
+                <input type="button" value="Cancelar" onclick="closeBox()">
             </section>
         </form>
+    </div>
+    <div class="no-acc close">
+        <h2>Você não está conectado</h2>
+        <p>conecte-se a uma conta para criar kanjis</p>
+        <section class="field-buttons">
+            <input type="button" value="Cadastrar-se" onclick="openLogin()">
+            <input type="button" value="Fechar" onclick="closeBox()">
+        </section>
     </div>
     <div class="form close">
         <h2>Adicionar Kanji</h2>
@@ -76,7 +93,7 @@
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Adicionar" id="createKanji">
-                <input type="button" value="Cancelar" onclick="cancelForm()">
+                <input type="button" value="Cancelar" onclick="closeBox()">
             </section>
         </form>
     </div>

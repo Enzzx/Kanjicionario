@@ -51,6 +51,7 @@ app.post("/logIn", (req, res) => {
 
                 const response = {
                     message: 'nenhum kanji encontrado',
+                    id: id,
                     hasAcc: true,
                     reachKanjis: false
                 }
@@ -62,6 +63,7 @@ app.post("/logIn", (req, res) => {
 
             const response = {
                 message: 'requisição completa',
+                id: id,
                 hasAcc: true,
                 reachKanjis: true,
                 result: result
@@ -112,10 +114,10 @@ app.post('/kanjiCreation', (req, res) => {
     const rom = req.body.rom
     const mean = req.body.mean
     const uso = req.body.uso
-    const img = req.body.imgSrc
-    const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, img, id_user) VALUES (?, ?, ?, ?, ?, 1);"
+    const id = req.body.idUser
+    const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, id_user) VALUES (?, ?, ?, ?, ?);"
 
-    con.query(doKanji, [hir, rom, mean, uso, img], (err, result) => {
+    con.query(doKanji, [hir, rom, mean, uso, id], (err, result) => {
         if (err) throw err;
         console.log(`${result.affectedRows} novo kanji criado`)
 
