@@ -31,7 +31,7 @@
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Entrar" id="enterAccount">
-                <input type="button" value="Sair" onclick="closeBox()">
+                <input type="button" value="Sair" onclick="resetAll()">
             </section>
         </form>
         <p>Ainda não possui uma conta?</p>
@@ -41,9 +41,9 @@
         <h2>Você já está conectado</h2>
         <p>O que deseja fazer?</p>
         <section>
-            <input type="button" value="voltar" onclick="closeBox()">
+            <input type="button" value="voltar" onclick="resetAll()">
             <input type="button" value="Sair da conta" onclick="getOut()">
-            <input type="button" value="Excluir conta">
+            <input type="button" value="Excluir conta" onclick="removeAcc()">
         </section>
     </div>
     <div class="sign close">
@@ -59,7 +59,7 @@
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Criar" id="createAccount">
-                <input type="button" value="Cancelar" onclick="closeBox()">
+                <input type="button" value="Cancelar" onclick="resetAll()">
             </section>
         </form>
     </div>
@@ -68,7 +68,7 @@
         <p>conecte-se a uma conta para criar kanjis</p>
         <section class="field-buttons">
             <input type="button" value="Cadastrar-se" onclick="openLogin()">
-            <input type="button" value="Fechar" onclick="closeBox()">
+            <input type="button" value="Fechar" onclick="resetAll()">
         </section>
     </div>
     <div class="form close">
@@ -93,11 +93,11 @@
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Adicionar" id="createKanji">
-                <input type="button" value="Cancelar" onclick="closeBox()">
+                <input type="button" value="Cancelar" onclick="resetAll()">
             </section>
         </form>
     </div>
-    <section>
+    <section id="kanji-house">
         <article class="kanji-box">
             <section class="top-box">
                 <article>

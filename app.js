@@ -129,6 +129,16 @@ app.post('/kanjiCreation', (req, res) => {
 
 })
 
+app.delete('/deleteAccount', (req, res) => {
+    const idUser = req.body.idUser
+    console.log(`ID a ser deletado: ${idUser}`)
+
+    const response = {
+        message: "ID deletado com sucesso"
+    }
+    res.status(200).json(response)
+})
+
 
 app.use((req, res) => {
     res.status(404).sendFile(__dirname + '/public/404.html')

@@ -11,6 +11,7 @@ const signForm = document.querySelector("#signForm")
 const kanjiForm = document.querySelector("#kanjiForm")
 const acc = document.querySelector(".acc")
 const noAcc = document.querySelector(".no-acc")
+const kanjiHouse = document.querySelector("#kanji-house")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
 	"image/apng",
@@ -28,13 +29,13 @@ const fileTypes = [
 
 // - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
-	constructor(img, hira, roma, sign, usso, nB) {
-		document.body.children[6].appendChild(nB)
+	constructor(hira, roma, mean, usso, nB) {
+		kanjiHouse.appendChild(nB)
 		nB.classList.add("kanji-box")
 		nB.innerHTML = `
   <section class="top-box">
         <article>
-              <img src="../../../Downloads/488.jpg" alt="kanji">
+              <img src="public/images/f488.jpg" alt="kanji">
         </article>
           <article>
             <aside>
@@ -50,7 +51,7 @@ class makeKanji {
     <section class="bottom-box">
         <aside>
             <h3 class="kanji-item">Significado literal</h3>
-               <p class="kanji-caption">${sign}</p>
+               <p class="kanji-caption">${mean}</p>
         </aside>
         <aside>
              <h3 class="kanji-item">Uso</h3>
@@ -86,10 +87,10 @@ createKanji.addEventListener('click', async (e) => {
 			const result = await requisition.json()
 
 			console.log(result)
+			const showKanji = new makeKanji(hir, rom, mean, uso, newBox)
 		} catch (err) {
 			throw err
 		}
-		//const doKanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
 	}
 
 
@@ -106,10 +107,6 @@ function openForm() {
 		resetAll()
 		noAcc.classList.remove('close')
 	}
-}
-
-function closeBox() {
-	resetAll()
 }
 
 function validateFileType(file) {
@@ -129,10 +126,10 @@ function openSign() {
 }
 
 function openLogin() {
+	resetAll()
 	if (idUser) {
 		acc.classList.remove('close')
 	} else {
-		resetAll()
 		loginBox.classList.remove("close")
 	}
 }
@@ -140,7 +137,28 @@ function openLogin() {
 function getOut() {
 	idUser = 0
 	hasAcc = false
+	while (kanjiHouse.firstChild) {
+		kanjiHouse.removeChild(kanjiHouse.firstChild)
+	}
 	resetAll()
+}
+
+async function removeAcc() {
+	const data = { idUser }
+	const head = {
+		method: 'DELETE',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data)
+	}
+	try {
+		const deleting = await fetch('/deleteAccount', head)
+		const deleted = await deleting.json()
+
+		console.log(deleted.message)
+		getOut()
+	} catch (err) {
+		throw err;
+	}
 }
 
 function resetAll() {
@@ -181,16 +199,17 @@ enterAccount.addEventListener('click', async (e) => {
 		if (hasAcc) {
 			loginBox.classList.add("close")
 			userForm.reset()
-			(async () => {
+			async function doKanji() {
 				kanjisObj.forEach(kanji => {
 					let newBox = document.createElement("article")
 					const hir = kanji.hir
 					const rom = kanji.rom
 					const mean = kanji.mean
 					const uso = kanji.uso
-					const doKanji = new makeKanji(imgSrc, hir, rom, sig, uso, newBox)
+					const doKanji = new makeKanji(hir, rom, mean, uso, newBox)
 				})
-			})()
+			}
+			doKanji()
 		}
 	} catch (err) {
 		throw err
@@ -234,10 +253,22 @@ createAccount.addEventListener('click', async (e) => {
 
 					idUser = loginResponse.id
 					hasAcc = loginResponse.hasAcc
+					kanjisObj = loginResponse.result
 					console.log(loginResponse.message)
 					if (hasAcc) {
 						signBox.classList.add("close")
 						signForm.reset()
+						async function doKanji() {
+							kanjisObj.forEach(kanji => {
+								let newBox = document.createElement("article")
+								const hir = kanji.hir
+								const rom = kanji.rom
+								const mean = kanji.mean
+								const uso = kanji.uso
+								const doKanji = new makeKanji(hir, rom, mean, uso, newBox)
+							})
+						}
+						doKanji()
 					}
 				} catch (err) {
 					throw err
