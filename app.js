@@ -131,12 +131,30 @@ app.post('/kanjiCreation', (req, res) => {
 
 app.delete('/deleteAccount', (req, res) => {
     const idUser = req.body.idUser
+    const deleteKanjis = "DELETE FROM kanjis WHERE id_user = ?;"
+    const deleteUser = "DELETE FROM users WHERE id_user = ?;"
     console.log(`ID a ser deletado: ${idUser}`)
 
-    const response = {
-        message: "ID deletado com sucesso"
-    }
-    res.status(200).json(response)
+    con.query(deleteKanjis, idUser, (err, result) => {
+        if (err) throw err;
+        console.log("kanjis deletado")
+
+        con.query(deleteUser, idUser, (err, result) => {
+            if (err) throw err;
+            console.log("usuário deletado")
+
+            const response = {
+                message: "Conta deletada com sucesso"
+            }
+            res.status(200).json(response)
+        })
+    })
+})
+
+app.delete('/removeKanji', (req, res) => {
+    const idKanji = req.body.idKanji
+    const idUser = req.body.idUser
+    console.log(req.body)
 })
 
 

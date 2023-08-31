@@ -29,15 +29,15 @@ const fileTypes = [
 
 // - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
-	constructor(hira, roma, mean, usso, nB) {
+	constructor(hira, roma, mean, usso, nB, btn) {
 		kanjiHouse.appendChild(nB)
 		nB.classList.add("kanji-box")
 		nB.innerHTML = `
   <section class="top-box">
         <article>
-              <img src="public/images/f488.jpg" alt="kanji">
+            <img src="public/images/f488.jpg" alt="kanji">
         </article>
-          <article>
+        <article>
             <aside>
                 <h3 class="kanji-item">Hiragana</h3>
                 <p class="kanji-caption">${hira}</p>
@@ -51,13 +51,14 @@ class makeKanji {
     <section class="bottom-box">
         <aside>
             <h3 class="kanji-item">Significado literal</h3>
-               <p class="kanji-caption">${mean}</p>
+            <p class="kanji-caption">${mean}</p>
         </aside>
         <aside>
-             <h3 class="kanji-item">Uso</h3>
+            <h3 class="kanji-item">Uso</h3>
             <p class="kanji-caption">${usso}</p>
         </aside>
     </section>`
+		nB.appendChild(btn)
 	}
 }
 
@@ -68,12 +69,18 @@ createKanji.addEventListener('click', async (e) => {
 	const file = inputFile.files[0]
 
 	if (validateFileType(file)) {
-		let newBox = document.createElement("article")
+		const newBox = document.createElement("article")
 		const hir = document.querySelector("#hiragana").value
 		const rom = document.querySelector("#romanji").value
 		const mean = document.querySelector("#significado").value
 		const uso = document.querySelector("#uso").value
-		const imgSrc = URL.createObjectURL(file)
+		const button = document.createElement("input")
+		button.type = "button"
+		button.value = "Excluir"
+		button.addEventListener('click', async () => {
+			console.log(hir, rom)
+		})
+		//const imgSrc = URL.createObjectURL(file)
 
 		const data = { hir, rom, mean, uso, idUser }
 		const head = {
@@ -87,7 +94,7 @@ createKanji.addEventListener('click', async (e) => {
 			const result = await requisition.json()
 
 			console.log(result)
-			const showKanji = new makeKanji(hir, rom, mean, uso, newBox)
+			const doKanji = new makeKanji(hir, rom, mean, uso, newBox, button)
 		} catch (err) {
 			throw err
 		}
@@ -199,17 +206,12 @@ enterAccount.addEventListener('click', async (e) => {
 		if (hasAcc) {
 			loginBox.classList.add("close")
 			userForm.reset()
-			async function doKanji() {
-				kanjisObj.forEach(kanji => {
-					let newBox = document.createElement("article")
-					const hir = kanji.hir
-					const rom = kanji.rom
-					const mean = kanji.mean
-					const uso = kanji.uso
-					const doKanji = new makeKanji(hir, rom, mean, uso, newBox)
-				})
+			if (kanjisObj) {
+				async function showKanji() {
+					kanjisObj.forEach(kanjiFE)
+				}
+				showKanji()
 			}
-			doKanji()
 		}
 	} catch (err) {
 		throw err
@@ -253,22 +255,10 @@ createAccount.addEventListener('click', async (e) => {
 
 					idUser = loginResponse.id
 					hasAcc = loginResponse.hasAcc
-					kanjisObj = loginResponse.result
 					console.log(loginResponse.message)
 					if (hasAcc) {
 						signBox.classList.add("close")
 						signForm.reset()
-						async function doKanji() {
-							kanjisObj.forEach(kanji => {
-								let newBox = document.createElement("article")
-								const hir = kanji.hir
-								const rom = kanji.rom
-								const mean = kanji.mean
-								const uso = kanji.uso
-								const doKanji = new makeKanji(hir, rom, mean, uso, newBox)
-							})
-						}
-						doKanji()
 					}
 				} catch (err) {
 					throw err
@@ -280,3 +270,32 @@ createAccount.addEventListener('click', async (e) => {
 		throw err
 	}
 })
+
+function kanjiFE(kanji) {
+	const idKanji = kanji.id_kanji
+	const newBox = document.createElement("article")
+	const hir = kanji.hir
+	const rom = kanji.rom
+	const mean = kanji.mean
+	const uso = kanji.uso
+	const button = document.createElement("input")
+	button.type = "button"
+	button.value = "Excluir"
+	button.addEventListener('click', async () => {
+		data = { idKanji, idUser }
+		head = {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		}
+		try {
+			const removing = await fetch('/removeKanji', head)
+			const removed = await removing.json()
+
+			console.log(removed.message)
+		} catch (err) {
+			if (err) throw err;
+		}
+	})
+	const doKanji = new makeKanji(hir, rom, mean, uso, newBox, button)
+}
