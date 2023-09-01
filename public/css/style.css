@@ -124,10 +124,20 @@ h1 {
 .field {
     display: flex;
     flex-direction: column;
-    margin: 0.5em 0;
+    margin: 0.7em 0;
 }
 .field > input {
     padding: 1px 5px;
+}
+.field > p {
+    font-size: 0.8em;
+    color: #c41a1a;
+    opacity: 0;
+    visibility: hidden;
+}
+.field .wrong {
+    opacity: 1;
+    visibility: visible;
 }
 
 .field-buttons {

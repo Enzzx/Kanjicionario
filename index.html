@@ -17,17 +17,19 @@
             <img src="public/images/user.svg" onclick="openLogin()">
         </div>
     </nav>
-    <h1>Número de Kanjis:</h1>
+    <h1>Número de Kanjis: <span id="kuanjitity"></span></h1>
     <div class="login close">
         <h2>Acesse sua conta</h2>
         <form id="userForm">
             <section class="field">
                 <label for="userName">Usuário:</label>
                 <input type="text" name="userName" id="userName">
+                <p class="warn">*Usuário não encontrado</p>
             </section>
             <section class="field">
                 <label for="password">Senha:</label>
                 <input type="text" name="password" id="password">
+                <p class="warn">*senha incorreta</p>
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Entrar" id="enterAccount">
@@ -48,10 +50,11 @@
     </div>
     <div class="sign close">
         <h2>Crie uma nova conta</h2>
-        <form id="signForm" action="#" method="get">
+        <form id="signForm">
             <section class="field">
                 <label for="newName">Novo usuário:</label>
                 <input type="text" name="newName" id="newName">
+                <p class="warn">*tente outro nome de usuário</p>
             </section>
             <section class="field">
                 <label for="newPassword">Nova senha:</label>
@@ -73,8 +76,8 @@
     </div>
     <div class="form close">
         <h2>Adicionar Kanji</h2>
-        <form id="kanjiForm" action="#" method="get">
-            <input type="file" name="file" id="file" accept="image/*">
+        <form id="kanjiForm">
+            <input type="file" name="file" id="file" accept="image/*" required>
             <section class="field">
                 <label for="hiragana">Hiragana:</label>
                 <input type="text" name="hiragana" id="hiragana" required>

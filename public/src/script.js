@@ -11,6 +11,9 @@ const signForm = document.querySelector("#signForm")
 const kanjiForm = document.querySelector("#kanjiForm")
 const acc = document.querySelector(".acc")
 const noAcc = document.querySelector(".no-acc")
+const warns = document.querySelectorAll(".warn")
+let kuanjitity = document.querySelector("#kuanjitity")
+let numKanjis = 0
 const kanjiHouse = document.querySelector("#kanji-house")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
@@ -78,7 +81,7 @@ createKanji.addEventListener('click', async (e) => {
 		button.type = "button"
 		button.value = "Excluir"
 		button.addEventListener('click', async () => {
-			console.log(hir, rom)
+			// A PENSAR
 		})
 		//const imgSrc = URL.createObjectURL(file)
 
@@ -94,6 +97,8 @@ createKanji.addEventListener('click', async (e) => {
 			const result = await requisition.json()
 
 			console.log(result)
+			numKanjis++
+			kuanjitity.textContent = numKanjis
 			const doKanji = new makeKanji(hir, rom, mean, uso, newBox, button)
 		} catch (err) {
 			throw err
@@ -174,6 +179,9 @@ function resetAll() {
 	kanjiBox.classList.add("close")
 	acc.classList.add('close')
 	noAcc.classList.add('close')
+	warns.forEach(warn => {
+		warn.classList.remove('wrong')
+	})
 
 	userForm.reset()
 	signForm.reset()
@@ -185,6 +193,9 @@ function resetAll() {
 
 enterAccount.addEventListener('click', async (e) => {
 	e.preventDefault()
+	warns.forEach(warn => {
+		warn.classList.remove('wrong')
+	})
 
 	const user = document.querySelector('#userName').value
 	const password = document.querySelector('#password').value
@@ -200,9 +211,13 @@ enterAccount.addEventListener('click', async (e) => {
 		const result = await requisition.json()
 
 		idUser = result.id
+		nome = result.name
 		hasAcc = result.hasAcc
 		kanjisObj = result.result
-		console.log(result)
+		numKanjis = kanjisObj.length
+		kuanjitity.textContent = numKanjis
+		console.log(numKanjis)
+		console.log(result.message)
 		if (hasAcc) {
 			loginBox.classList.add("close")
 			userForm.reset()
@@ -212,6 +227,10 @@ enterAccount.addEventListener('click', async (e) => {
 				}
 				showKanji()
 			}
+		} else if (nome) {
+			warns[1].classList.add('wrong')
+		} else {
+			warns[0].classList.add('wrong')
 		}
 	} catch (err) {
 		throw err
@@ -265,6 +284,8 @@ createAccount.addEventListener('click', async (e) => {
 				}
 			}
 			autoLog()
+		} else {
+			warns[2].classList.add('wrong')
 		}
 	} catch (err) {
 		throw err
@@ -282,7 +303,8 @@ function kanjiFE(kanji) {
 	button.type = "button"
 	button.value = "Excluir"
 	button.addEventListener('click', async () => {
-		data = { idKanji, idUser }
+		button.parentNode.style.opacity = '0.7'
+		data = { idKanji }
 		head = {
 			method: 'DELETE',
 			headers: { 'Content-Type': 'application/json' },
@@ -293,6 +315,12 @@ function kanjiFE(kanji) {
 			const removed = await removing.json()
 
 			console.log(removed.message)
+			const hideKanji = setInterval(() => {
+				button.parentNode.remove()
+				numKanjis--
+				kuanjitity.textContent = numKanjis
+				clearInterval(hideKanji)
+			}, 200)
 		} catch (err) {
 			if (err) throw err;
 		}

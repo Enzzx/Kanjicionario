@@ -25,51 +25,61 @@ app.post("/logIn", (req, res) => {
 
     const user = req.body.user
     const password = req.body.password
-    const srcId = "SELECT id_user FROM users WHERE name = ? AND password = ?;"
+    const srcId = "SELECT id_user, password FROM users WHERE name = ?;"
     const srcKanjis = "SELECT * FROM kanjis WHERE id_user = ?;"
 
-    con.query(srcId, [user, password], (err, result) => {
+    con.query(srcId, user, (err, result) => {
         if (err) throw err;
         else if (result == "") {
-            console.log('o valor inserido não existe')
+            console.log('o nome de usuário não existe')
 
             const response = {
-                message: 'nome e/ou senha de usuário incorreto',
+                message: 'nome de usuário não existente',
+                name: false,
                 hasAcc: false,
-                reachKanjis: false
             }
             return res.status(401).json(response)
         }
 
-        const id = result[0].id_user
-        console.log(`id: ${id}`)
-
-        con.query(srcKanjis, id, (err, result) => {
-            if (err) throw err;
-            else if (result == "") {
-                console.log('sem kanjis')
-
-                const response = {
-                    message: 'nenhum kanji encontrado',
-                    id: id,
-                    hasAcc: true,
-                    reachKanjis: false
+        const realPassword = result[0].password
+        if (password == realPassword) {
+            const id = result[0].id_user
+            console.log(`id: ${id}`)
+    
+            con.query(srcKanjis, id, (err, result) => {
+                if (err) throw err;
+                else if (result == "") {
+                    console.log('sem kanjis')
+    
+                    const response = {
+                        message: 'nenhum kanji encontrado',
+                        id: id,
+                        name: true,
+                        hasAcc: true,
+                    }
+                    return res.status(200).json(response)
                 }
-                return res.status(200).json(response)
-            }
-
-            console.log("kanjis encontrados:")
-            console.log(result)
-
+    
+                console.log("kanjis encontrados:")
+                console.log(result)
+    
+                const response = {
+                    message: 'requisição completa',
+                    id: id,
+                    name: true,
+                    hasAcc: true,
+                    result: result
+                }
+                res.status(200).json(response)
+            })
+        } else {
             const response = {
-                message: 'requisição completa',
-                id: id,
-                hasAcc: true,
-                reachKanjis: true,
-                result: result
+                message: 'senha errada',
+                name: true,
+                hasAcc: false
             }
-            res.status(200).json(response)
-        })
+            res.status(401).json(response)
+        }
     })
 })
 
@@ -153,8 +163,17 @@ app.delete('/deleteAccount', (req, res) => {
 
 app.delete('/removeKanji', (req, res) => {
     const idKanji = req.body.idKanji
-    const idUser = req.body.idUser
-    console.log(req.body)
+    const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = ?;"
+    
+    con.query(deleteKanji, idKanji, (err, result) => {
+        if (err) throw err;
+        console.log("kanji deletado com sucesso")
+
+        const response = {
+            message: 'kanji deletado'
+        }
+        res.status(200).json(response)
+    })
 })
 
 
