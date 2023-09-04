@@ -123,7 +123,7 @@ app.post('/signUp', (req, res) => {
 
 
 app.post('/kanjiCreation', upload.single('img'), (req, res) => {
-    console.log(req)
+    console.log(req.file)
     const data = JSON.parse(req.body.data)
     const id = data.idUser
     // - - -  GUARDANDO IMAGEM  - - -
@@ -181,23 +181,33 @@ app.delete('/deleteAccount', (req, res) => {
             if (err) throw err;
             console.log("usuário deletado")
 
-            fs.readdir(directory, (err, files) => {
-                if (err) throw err;
-
-                if (files.length !== 0) {
-                    for (let file of files) {
-                        const filePath = path.join(directory, file)
-
-                        fs.unlinkSync(filePath, (err) => {
-                            if (err) throw err;
-                        })
-                    }
-                }
-
-                fs.rmdir(directory, (err) => {
+            try {
+                fs.accessSync(directory, constants.F_OK)
+                fs.readdir(directory, (err, files) => {
                     if (err) throw err;
+
+                    if (files.length !== 0) {
+                        for (let file of files) {
+                            const filePath = path.join(directory, file)
+
+                            fs.unlinkSync(filePath, (err) => {
+                                if (err) throw err;
+                            })
+                        }
+                    }
+
+                    fs.rmdir(directory, (err) => {
+                        if (err) throw err;
+                    })
                 })
-            })
+            } catch (err) {
+                if (err.code === 'ENOENT') {
+                    console.log('sem pasta de usuário')
+                } else {
+                    console.log(err)
+                }
+            }
+
 
 
             const response = {

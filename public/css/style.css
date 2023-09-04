@@ -164,6 +164,16 @@ body>section {
     padding: 0.8em 1em;
 }
 
+#home-message, #no-kanji-message {
+    flex: 100%;
+    background: lightgrey;
+    color: #c56b6b;
+    text-align: center;
+    padding: 2em 1em;
+    border: dashed red 3px;
+    border-radius: 1em;
+}
+
 .kanji-box {
     flex: 40%;
     display: flex;

@@ -15,6 +15,12 @@ const warns = document.querySelectorAll(".warn")
 let kuanjitity = document.querySelector("#kuanjitity")
 let numKanjis = 0
 const kanjiHouse = document.querySelector("#kanji-house")
+const homeMessage = document.createElement("article")
+homeMessage.id = "home-message"
+homeMessage.innerHTML = "<h2>Entre em uma conta para utilizar o kanjicionário</h2>"
+const noKanjiMessage = document.createElement("article")
+noKanjiMessage.id = "no-kanji-message"
+noKanjiMessage.innerHTML = "<h2>nenhum kanji criado ainda</h2>"
 const inputFile = document.querySelector("#file")
 const fileTypes = [
 	"image/apng",
@@ -83,7 +89,7 @@ createKanji.addEventListener('click', async (e) => {
 
 		const data = { hir, rom, mean, uso, idUser }
 		formData.append('data', JSON.stringify(data))
-		
+
 		let url
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
@@ -109,6 +115,9 @@ createKanji.addEventListener('click', async (e) => {
 			console.log(result)
 			numKanjis++
 			kuanjitity.textContent = numKanjis
+			if (kanjiHouse.appendChild(noKanjiMessage)) {
+				kanjiHouse.removeChild(noKanjiMessage)
+			}
 			const doKanji = new makeKanji(hir, rom, mean, uso, url, newBox, button)
 		} catch (err) {
 			throw err
@@ -161,8 +170,8 @@ function getOut() {
 	hasAcc = false
 	while (kanjiHouse.firstChild) {
 		kanjiHouse.removeChild(kanjiHouse.firstChild)
-		
 	}
+	kanjiHouse.appendChild(homeMessage)
 	numKanjis = 0
 	kuanjitity.textContent = numKanjis
 	resetAll()
@@ -229,6 +238,9 @@ enterAccount.addEventListener('click', async (e) => {
 		kanjisObj = result.result
 		console.log(result.message)
 		if (hasAcc) {
+			while (kanjiHouse.firstChild) {
+				kanjiHouse.removeChild(kanjiHouse.lastChild)
+			}
 			loginBox.classList.add("close")
 			userForm.reset()
 			kuanjitity.textContent = 0
@@ -239,6 +251,8 @@ enterAccount.addEventListener('click', async (e) => {
 					kanjisObj.forEach(kanjiFE)
 				}
 				showKanji()
+			} else {
+				kanjiHouse.appendChild(noKanjiMessage)
 			}
 		} else if (nome) {
 			warns[1].classList.add('wrong')
@@ -289,6 +303,10 @@ createAccount.addEventListener('click', async (e) => {
 					hasAcc = loginResponse.hasAcc
 					console.log(loginResponse.message)
 					if (hasAcc) {
+						while (kanjiHouse.firstChild) {
+							kanjiHouse.removeChild(kanjiHouse.lastChild)
+						}
+						kanjiHouse.appendChild(noKanjiMessage)
 						signBox.classList.add("close")
 						signForm.reset()
 					}
@@ -333,6 +351,9 @@ function kanjiFE(kanji) {
 				button.parentNode.remove()
 				numKanjis--
 				kuanjitity.textContent = numKanjis
+				if (numKanjis === 0) {
+					kanjiHouse.appendChild(noKanjiMessage)
+				}
 				clearInterval(hideKanji)
 			}, 200)
 		} catch (err) {
