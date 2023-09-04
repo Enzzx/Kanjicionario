@@ -1,6 +1,11 @@
 const express = require("express")
 const app = express()
 const port = 8080
+const path = require('path')
+const fs = require('fs')
+const { constants } = require("fs/promises")
+const multer = require('multer')
+const upload = multer({ dest: 'public/images/' })
 const mysql = require("mysql")
 
 // - - -  BANCO DE DADOS  - - -
@@ -45,12 +50,12 @@ app.post("/logIn", (req, res) => {
         if (password == realPassword) {
             const id = result[0].id_user
             console.log(`id: ${id}`)
-    
+
             con.query(srcKanjis, id, (err, result) => {
                 if (err) throw err;
                 else if (result == "") {
                     console.log('sem kanjis')
-    
+
                     const response = {
                         message: 'nenhum kanji encontrado',
                         id: id,
@@ -59,10 +64,10 @@ app.post("/logIn", (req, res) => {
                     }
                     return res.status(200).json(response)
                 }
-    
+
                 console.log("kanjis encontrados:")
                 console.log(result)
-    
+
                 const response = {
                     message: 'requisição completa',
                     id: id,
@@ -117,17 +122,39 @@ app.post('/signUp', (req, res) => {
 })
 
 
-app.post('/kanjiCreation', (req, res) => {
-    console.log(req.body)
+app.post('/kanjiCreation', upload.single('img'), (req, res) => {
+    console.log(req)
+    const data = JSON.parse(req.body.data)
+    const id = data.idUser
+    // - - -  GUARDANDO IMAGEM  - - -
+    const filePath = req.file.path
+    const nameImg = req.file.originalname
+    const storage = `public/images/${id}`
 
-    const hir = req.body.hir
-    const rom = req.body.rom
-    const mean = req.body.mean
-    const uso = req.body.uso
-    const id = req.body.idUser
-    const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, id_user) VALUES (?, ?, ?, ?, ?);"
+    try {
+        fs.accessSync(storage, constants.F_OK)
+    } catch (err) {
+        if (err.code === 'ENOENT') {
+            fs.mkdirSync(storage)
+        } else {
+            console.error(err)
+        }
+    }
+    const actualPath = path.join(storage, nameImg)
+    fs.copyFileSync(filePath, actualPath)
+    fs.unlink(filePath, (err) => {
+        console.error(err)
+    })
+    console.log(actualPath)
 
-    con.query(doKanji, [hir, rom, mean, uso, id], (err, result) => {
+    // - - -  GUARDANDO NO BANCO DE DADOS  - - -
+    const hir = data.hir
+    const rom = data.rom
+    const mean = data.mean
+    const uso = data.uso
+    const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, imgPath, id_user) VALUES (?, ?, ?, ?, ?, ?);"
+
+    con.query(doKanji, [hir, rom, mean, uso, actualPath, id], (err, result) => {
         if (err) throw err;
         console.log(`${result.affectedRows} novo kanji criado`)
 
@@ -141,17 +168,37 @@ app.post('/kanjiCreation', (req, res) => {
 
 app.delete('/deleteAccount', (req, res) => {
     const idUser = req.body.idUser
+    const directory = `public/images/${idUser}`
     const deleteKanjis = "DELETE FROM kanjis WHERE id_user = ?;"
     const deleteUser = "DELETE FROM users WHERE id_user = ?;"
     console.log(`ID a ser deletado: ${idUser}`)
 
     con.query(deleteKanjis, idUser, (err, result) => {
         if (err) throw err;
-        console.log("kanjis deletado")
+        console.log("kanjis deletados")
 
         con.query(deleteUser, idUser, (err, result) => {
             if (err) throw err;
             console.log("usuário deletado")
+
+            fs.readdir(directory, (err, files) => {
+                if (err) throw err;
+
+                if (files.length !== 0) {
+                    for (let file of files) {
+                        const filePath = path.join(directory, file)
+
+                        fs.unlinkSync(filePath, (err) => {
+                            if (err) throw err;
+                        })
+                    }
+                }
+
+                fs.rmdir(directory, (err) => {
+                    if (err) throw err;
+                })
+            })
+
 
             const response = {
                 message: "Conta deletada com sucesso"
@@ -163,12 +210,16 @@ app.delete('/deleteAccount', (req, res) => {
 
 app.delete('/removeKanji', (req, res) => {
     const idKanji = req.body.idKanji
+    const path = req.body.path
     const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = ?;"
-    
+
     con.query(deleteKanji, idKanji, (err, result) => {
         if (err) throw err;
         console.log("kanji deletado com sucesso")
 
+        fs.unlink(path, (err) => {
+            console.log(err)
+        })
         const response = {
             message: 'kanji deletado'
         }

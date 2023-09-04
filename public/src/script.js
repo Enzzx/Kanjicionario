@@ -32,13 +32,13 @@ const fileTypes = [
 
 // - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
-	constructor(hira, roma, mean, usso, nB, btn) {
+	constructor(hira, roma, mean, usso, img, nB, btn) {
 		kanjiHouse.appendChild(nB)
 		nB.classList.add("kanji-box")
 		nB.innerHTML = `
   <section class="top-box">
         <article>
-            <img src="public/images/f488.jpg" alt="kanji">
+            <img src="${img}" alt="kanji">
         </article>
         <article>
             <aside>
@@ -77,19 +77,29 @@ createKanji.addEventListener('click', async (e) => {
 		const rom = document.querySelector("#romanji").value
 		const mean = document.querySelector("#significado").value
 		const uso = document.querySelector("#uso").value
+
+		const formData = new FormData()
+		formData.append('img', file)
+
+		const data = { hir, rom, mean, uso, idUser }
+		formData.append('data', JSON.stringify(data))
+		
+		let url
+		const reader = new FileReader()
+		reader.readAsDataURL(file)
+		reader.addEventListener('load', () => {
+			return url = reader.result
+		})
 		const button = document.createElement("input")
 		button.type = "button"
 		button.value = "Excluir"
 		button.addEventListener('click', async () => {
 			// A PENSAR
 		})
-		//const imgSrc = URL.createObjectURL(file)
 
-		const data = { hir, rom, mean, uso, idUser }
 		const head = {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data)
+			body: formData
 		}
 
 		try {
@@ -99,7 +109,7 @@ createKanji.addEventListener('click', async (e) => {
 			console.log(result)
 			numKanjis++
 			kuanjitity.textContent = numKanjis
-			const doKanji = new makeKanji(hir, rom, mean, uso, newBox, button)
+			const doKanji = new makeKanji(hir, rom, mean, uso, url, newBox, button)
 		} catch (err) {
 			throw err
 		}
@@ -151,7 +161,10 @@ function getOut() {
 	hasAcc = false
 	while (kanjiHouse.firstChild) {
 		kanjiHouse.removeChild(kanjiHouse.firstChild)
+		
 	}
+	numKanjis = 0
+	kuanjitity.textContent = numKanjis
 	resetAll()
 }
 
@@ -214,14 +227,14 @@ enterAccount.addEventListener('click', async (e) => {
 		nome = result.name
 		hasAcc = result.hasAcc
 		kanjisObj = result.result
-		numKanjis = kanjisObj.length
-		kuanjitity.textContent = numKanjis
-		console.log(numKanjis)
 		console.log(result.message)
 		if (hasAcc) {
 			loginBox.classList.add("close")
 			userForm.reset()
+			kuanjitity.textContent = 0
 			if (kanjisObj) {
+				numKanjis = kanjisObj.length
+				kuanjitity.textContent = numKanjis
 				async function showKanji() {
 					kanjisObj.forEach(kanjiFE)
 				}
@@ -299,12 +312,13 @@ function kanjiFE(kanji) {
 	const rom = kanji.rom
 	const mean = kanji.mean
 	const uso = kanji.uso
+	const path = kanji.imgPath
 	const button = document.createElement("input")
 	button.type = "button"
 	button.value = "Excluir"
 	button.addEventListener('click', async () => {
 		button.parentNode.style.opacity = '0.7'
-		data = { idKanji }
+		data = { idKanji, path }
 		head = {
 			method: 'DELETE',
 			headers: { 'Content-Type': 'application/json' },
@@ -325,5 +339,5 @@ function kanjiFE(kanji) {
 			if (err) throw err;
 		}
 	})
-	const doKanji = new makeKanji(hir, rom, mean, uso, newBox, button)
+	const doKanji = new makeKanji(hir, rom, mean, uso, path, newBox, button)
 }
