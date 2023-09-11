@@ -21,6 +21,7 @@ homeMessage.innerHTML = "<h2>Entre em uma conta para utilizar o kanjicionário</
 const noKanjiMessage = document.createElement("article")
 noKanjiMessage.id = "no-kanji-message"
 noKanjiMessage.innerHTML = "<h2>nenhum kanji criado ainda</h2>"
+const searchbar = document.querySelector("#searchbar")
 const inputFile = document.querySelector("#file")
 const fileTypes = [
 	"image/apng",
@@ -35,6 +36,21 @@ const fileTypes = [
 	"image/x-icon"
 ]
 
+
+searchbar.addEventListener('input', (e) => {
+	const romanjis = document.querySelectorAll(".search")
+	const searchs = []
+	
+	romanjis.forEach(romanji => {
+		if (romanji.textContent.indexOf(searchbar.value) !== -1) {
+			romanji.closest(".kanji-box").classList.remove('close')
+			console.log(`o kanji ${romanji.textContent} possui ${searchbar.value}`)
+		} else {
+			romanji.closest(".kanji-box").classList.add('close')
+			console.log(`o kanji ${romanji.textContent} não possui ${searchbar.value}`)
+		}
+	})
+})
 
 // - - - - -   FORMULÁRIO   - - - - -
 class makeKanji {
@@ -53,7 +69,7 @@ class makeKanji {
             </aside>
             <aside>
                 <h3 class="kanji-item">Romanji</h3>
-                <p class="kanji-caption">${roma}</p>
+                <p class="kanji-caption search">${roma}</p>
             </aside>
         </article>
     </section>
