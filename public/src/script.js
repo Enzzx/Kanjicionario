@@ -40,10 +40,9 @@ const fileTypes = [
 
 searchbar.addEventListener('input', (e) => {
 	const romanjis = document.querySelectorAll(".search")
-	const searchs = []
-	
+
 	romanjis.forEach(romanji => {
-		if (romanji.textContent.indexOf(searchbar.value) !== -1) {
+		if (romanji.textContent.toLowerCase().indexOf(searchbar.value.toLowerCase()) !== -1) {
 			romanji.closest(".kanji-box").classList.remove('close-box')
 		} else {
 			romanji.closest(".kanji-box").classList.add('close-box')
@@ -165,6 +164,68 @@ function validateFileType(file) {
 
 
 // - - - - -   USUÁRIO   - - - - -
+window.onload = async () => {
+
+	let userInfo = getCookie("userInfo")
+
+	if (userInfo !== null) {
+		userInfo = JSON.parse(decodeURIComponent(userInfo))
+		console.log(userInfo)
+
+		const head = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(userInfo)
+		}
+
+		try {
+			const requisition = await fetch('/logIn', head)
+			const result = await requisition.json()
+
+			idUser = result.id
+			nome = result.name
+			hasAcc = result.hasAcc
+			kanjisObj = result.result
+			console.log(result.message)
+			if (hasAcc) {
+				pfp.src = 'public/images/pfp.png'
+				while (kanjiHouse.firstChild) {
+					kanjiHouse.removeChild(kanjiHouse.lastChild)
+				}
+				loginBox.classList.add("close")
+				userForm.reset()
+				kuanjitity.textContent = 0
+				if (kanjisObj) {
+					numKanjis = kanjisObj.length
+					kuanjitity.textContent = numKanjis
+					async function showKanji() {
+						kanjisObj.forEach(kanjiFE)
+					}
+					showKanji()
+				} else {
+					kanjiHouse.appendChild(noKanjiMessage)
+				}
+			} else if (nome) {
+				warns[1].classList.add('wrong')
+			} else {
+				warns[0].classList.add('wrong')
+			}
+		} catch (err) {
+			throw err
+		}
+	}
+
+
+	function getCookie(cookieName) {
+		const cookies = document.cookie.split('; ')
+		for (let i = 0; i < cookies.length; i++) {
+			const cookie = cookies[i].split('=')
+			if (cookie[0] === cookieName) {
+				return cookie[1]
+			}
+		}
+	}
+}
 
 function openSign() {
 	resetAll()
@@ -181,6 +242,7 @@ function openLogin() {
 }
 
 function getOut() {
+	document.cookie = `userInfo=nada; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`
 	pfp.src = 'public/images/user.svg'
 	idUser = 0
 	hasAcc = false
@@ -254,6 +316,11 @@ enterAccount.addEventListener('click', async (e) => {
 		kanjisObj = result.result
 		console.log(result.message)
 		if (hasAcc) {
+			const resCookie = JSON.stringify(data)
+			let date = new Date()
+			date.setDate(date.getDate() + 2)
+			document.cookie = `userInfo=${resCookie}; expires=${date.toUTCString()}; path=/`
+
 			pfp.src = 'public/images/pfp.png'
 			while (kanjiHouse.firstChild) {
 				kanjiHouse.removeChild(kanjiHouse.lastChild)
@@ -320,6 +387,11 @@ createAccount.addEventListener('click', async (e) => {
 					hasAcc = loginResponse.hasAcc
 					console.log(loginResponse.message)
 					if (hasAcc) {
+						const resCookie = JSON.stringify(data)
+						let date = new Date()
+						date.setDate(date.getDate() + 2)
+						document.cookie = `userInfo=${resCookie}; expires=${date.toUTCString()}; path=/`
+y
 						pfp.src = 'public/images/pfp.png'
 						while (kanjiHouse.firstChild) {
 							kanjiHouse.removeChild(kanjiHouse.lastChild)
