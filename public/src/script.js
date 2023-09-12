@@ -1,5 +1,6 @@
 let hasAcc = false
 let idUser = 0
+const pfp = document.querySelector("#pfp")
 const loginBox = document.querySelector(".login")
 const enterAccount = document.querySelector("#enterAccount")
 const signBox = document.querySelector(".sign")
@@ -43,11 +44,9 @@ searchbar.addEventListener('input', (e) => {
 	
 	romanjis.forEach(romanji => {
 		if (romanji.textContent.indexOf(searchbar.value) !== -1) {
-			romanji.closest(".kanji-box").classList.remove('close')
-			console.log(`o kanji ${romanji.textContent} possui ${searchbar.value}`)
+			romanji.closest(".kanji-box").classList.remove('close-box')
 		} else {
-			romanji.closest(".kanji-box").classList.add('close')
-			console.log(`o kanji ${romanji.textContent} não possui ${searchbar.value}`)
+			romanji.closest(".kanji-box").classList.add('close-box')
 		}
 	})
 })
@@ -182,6 +181,7 @@ function openLogin() {
 }
 
 function getOut() {
+	pfp.src = 'public/images/user.svg'
 	idUser = 0
 	hasAcc = false
 	while (kanjiHouse.firstChild) {
@@ -254,6 +254,7 @@ enterAccount.addEventListener('click', async (e) => {
 		kanjisObj = result.result
 		console.log(result.message)
 		if (hasAcc) {
+			pfp.src = 'public/images/pfp.png'
 			while (kanjiHouse.firstChild) {
 				kanjiHouse.removeChild(kanjiHouse.lastChild)
 			}
@@ -319,6 +320,7 @@ createAccount.addEventListener('click', async (e) => {
 					hasAcc = loginResponse.hasAcc
 					console.log(loginResponse.message)
 					if (hasAcc) {
+						pfp.src = 'public/images/pfp.png'
 						while (kanjiHouse.firstChild) {
 							kanjiHouse.removeChild(kanjiHouse.lastChild)
 						}

@@ -126,9 +126,10 @@ app.post('/kanjiCreation', upload.single('img'), (req, res) => {
     console.log(req.file)
     const data = JSON.parse(req.body.data)
     const id = data.idUser
-    // - - -  GUARDANDO IMAGEM  - - -
+
+    // - - -  GUARDANDO NO FILE PATH  - - -
     const filePath = req.file.path
-    const nameImg = req.file.originalname
+    const nameImg = req.file.filename
     const storage = `public/images/${id}`
 
     try {
@@ -219,6 +220,7 @@ app.delete('/deleteAccount', (req, res) => {
 })
 
 app.delete('/removeKanji', (req, res) => {
+    console.log(req.body)
     const idKanji = req.body.idKanji
     const path = req.body.path
     const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = ?;"
