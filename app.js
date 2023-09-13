@@ -12,7 +12,7 @@ const { Pool } = require('pg');
 const pool = new Pool({
   user: 'zenzx',
   host: 'dpg-cjnro44dfrcc739n887g-a',
-  database: 'postgres://zenzx:7rrdC1g3aRVUf9yjNw1h3N3LE60MFqPs@dpg-cjnro44dfrcc739n887g-a/kanjicionario_db',
+  database: 'kanjicionario_db',
   password: '7rrdC1g3aRVUf9yjNw1h3N3LE60MFqPs',
   port: 5432
 });
