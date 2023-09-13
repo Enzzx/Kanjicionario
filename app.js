@@ -10,11 +10,11 @@ const { Pool } = require('pg');
 
 // - - -  BANCO DE DADOS  - - -
 const pool = new Pool({
-  user: 'seu_usuario',
-  host: 'seu_host',
-  database: 'seu_banco_de_dados',
-  password: 'sua_senha',
-  port: 5432, // Porta padrão do PostgreSQL
+  user: 'zenzx',
+  host: 'dpg-cjnro44dfrcc739n887g-a',
+  database: 'postgres://zenzx:7rrdC1g3aRVUf9yjNw1h3N3LE60MFqPs@dpg-cjnro44dfrcc739n887g-a/kanjicionario_db',
+  password: '7rrdC1g3aRVUf9yjNw1h3N3LE60MFqPs',
+  port: 5432
 });
 
 pool.connect()
