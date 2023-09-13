@@ -1,250 +1,255 @@
-const express = require("express")
-const app = express()
-const port = 8080
-const path = require('path')
-const fs = require('fs')
-const { constants } = require("fs/promises")
-const multer = require('multer')
-const upload = multer({ dest: 'public/images/' })
-const mysql = require("mysql")
+const express = require("express");
+const app = express();
+const port = 8080;
+const path = require('path');
+const fs = require('fs');
+const { constants } = require("fs/promises");
+const multer = require('multer');
+const upload = multer({ dest: 'public/images/' });
+const { Pool } = require('pg');
 
 // - - -  BANCO DE DADOS  - - -
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "zenzx",
-    password: "5142615enzo",
-    database: "teste"
-})
-con.connect((err) => {
-    if (err) throw err;
-    console.log("DB tá na linha")
-})
+const pool = new Pool({
+  user: 'seu_usuario',
+  host: 'seu_host',
+  database: 'seu_banco_de_dados',
+  password: 'sua_senha',
+  port: 5432, // Porta padrão do PostgreSQL
+});
+
+pool.connect()
+  .then(() => {
+    console.log("DB tá na linha");
+  })
+  .catch(err => {
+    console.error(err);
+  });
 
 // - - -  USOS EXTERNOS  - - -
-app.use(express.json())
-app.use(express.static(__dirname))
+app.use(express.json());
+app.use(express.static(__dirname));
 
 // - - -  SERVIDOR  - - -
-app.post("/logIn", (req, res) => {
-    console.log(req.body)
+app.post("/logIn", async (req, res) => {
+  console.log(req.body);
 
-    const user = req.body.user
-    const password = req.body.password
-    const srcId = "SELECT id_user, password FROM users WHERE name = ?;"
-    const srcKanjis = "SELECT * FROM kanjis WHERE id_user = ?;"
+  const user = req.body.user;
+  const password = req.body.password;
+  const srcId = "SELECT id_user, password FROM users WHERE name = $1;";
+  const srcKanjis = "SELECT * FROM kanjis WHERE id_user = $1;";
 
-    con.query(srcId, user, (err, result) => {
-        if (err) throw err;
-        else if (result == "") {
-            console.log('o nome de usuário não existe')
+  try {
+    const idResult = await pool.query(srcId, [user]);
 
-            const response = {
-                message: 'nome de usuário não existente',
-                name: false,
-                hasAcc: false,
-            }
-            return res.status(401).json(response)
-        }
+    if (idResult.rows.length === 0) {
+      console.log('o nome de usuário não existe');
 
-        const realPassword = result[0].password
-        if (password == realPassword) {
-            const id = result[0].id_user
-            console.log(`id: ${id}`)
+      const response = {
+        message: 'nome de usuário não existente',
+        name: false,
+        hasAcc: false,
+      };
+      return res.status(401).json(response);
+    }
 
-            con.query(srcKanjis, id, (err, result) => {
-                if (err) throw err;
-                else if (result == "") {
-                    console.log('sem kanjis')
+    const realPassword = idResult.rows[0].password;
+    if (password === realPassword) {
+      const id = idResult.rows[0].id_user;
+      console.log(`id: ${id}`);
 
-                    const response = {
-                        message: 'nenhum kanji encontrado',
-                        id: id,
-                        name: true,
-                        hasAcc: true,
-                    }
-                    return res.status(200).json(response)
-                }
+      const kanjisResult = await pool.query(srcKanjis, [id]);
 
-                console.log("kanjis encontrados:")
-                console.log(result)
+      if (kanjisResult.rows.length === 0) {
+        console.log('sem kanjis');
 
-                const response = {
-                    message: 'requisição completa',
-                    id: id,
-                    name: true,
-                    hasAcc: true,
-                    result: result
-                }
-                res.status(200).json(response)
-            })
-        } else {
-            const response = {
-                message: 'senha errada',
-                name: true,
-                hasAcc: false
-            }
-            res.status(401).json(response)
-        }
-    })
-})
+        const response = {
+          message: 'nenhum kanji encontrado',
+          id: id,
+          name: true,
+          hasAcc: true,
+        };
+        return res.status(200).json(response);
+      }
 
+      console.log("kanjis encontrados:");
+      console.log(kanjisResult.rows);
 
-app.post('/signUp', (req, res) => {
-    console.log(req.body)
+      const response = {
+        message: 'requisição completa',
+        id: id,
+        name: true,
+        hasAcc: true,
+        result: kanjisResult.rows
+      };
+      res.status(200).json(response);
+    } else {
+      const response = {
+        message: 'senha errada',
+        name: true,
+        hasAcc: false
+      };
+      res.status(401).json(response);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
 
-    const newUser = req.body.newUser
-    const newPassword = req.body.newPassword
-    const userExists = "SELECT * FROM users WHERE name = ?;"
-    const doUser = "INSERT INTO users (name, password) VALUES (?, ?);"
+app.post('/signUp', async (req, res) => {
+  console.log(req.body);
 
-    con.query(userExists, newUser, (err, result) => {
-        if (err) throw err;
-        else if (result != "") {
-            console.log("este nome de usuário já está em uso")
+  const newUser = req.body.newUser;
+  const newPassword = req.body.newPassword;
+  const userExists = "SELECT * FROM users WHERE name = $1;";
+  const doUser = "INSERT INTO users (name, password) VALUES ($1, $2);";
 
-            const response = {
-                message: 'tente outro nome de usuário'
-            }
-            return res.status(401).json(response)
-        }
+  try {
+    const userCheckResult = await pool.query(userExists, [newUser]);
 
-        con.query(doUser, [newUser, newPassword], (err, result) => {
-            if (err) throw err;
-            console.log(`${result.affectedRows} novo usuário foi criado`)
+    if (userCheckResult.rows.length !== 0) {
+      console.log("este nome de usuário já está em uso");
 
-            const response = {
-                message: 'novo usuário criado',
-                autoLogin: true
-            }
-            res.status(200).json(response)
-        })
-    })
-})
+      const response = {
+        message: 'tente outro nome de usuário'
+      };
+      return res.status(401).json(response);
+    }
 
+    await pool.query(doUser, [newUser, newPassword]);
+    console.log(`Novo usuário foi criado`);
 
-app.post('/kanjiCreation', upload.single('img'), (req, res) => {
-    console.log(req.file)
-    const data = JSON.parse(req.body.data)
-    const id = data.idUser
+    const response = {
+      message: 'novo usuário criado',
+      autoLogin: true
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
 
-    // - - -  GUARDANDO NO FILE PATH  - - -
-    const filePath = req.file.path
-    const nameImg = req.file.filename
-    const storage = `public/images/${id}`
+app.post('/kanjiCreation', upload.single('img'), async (req, res) => {
+  console.log(req.file);
+  const data = JSON.parse(req.body.data);
+  const id = data.idUser;
+
+  // - - -  GUARDANDO NO FILE PATH  - - -
+  const filePath = req.file.path;
+  const nameImg = req.file.filename;
+  const storage = `public/images/${id}`;
+
+  try {
+    fs.accessSync(storage, constants.F_OK);
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      fs.mkdirSync(storage);
+    } else {
+      console.error(err);
+    }
+  }
+  const actualPath = path.join(storage, nameImg);
+  fs.copyFileSync(filePath, actualPath);
+  fs.unlink(filePath, (err) => {
+    console.error(err);
+  });
+  console.log(actualPath);
+
+  // - - -  GUARDANDO NO BANCO DE DADOS  - - -
+  const hir = data.hir;
+  const rom = data.rom;
+  const mean = data.mean;
+  const uso = data.uso;
+  const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, imgPath, id_user) VALUES ($1, $2, $3, $4, $5, $6);";
+
+  try {
+    await pool.query(doKanji, [hir, rom, mean, uso, actualPath, id]);
+    console.log(`Novo kanji foi criado`);
+
+    const response = {
+      message: 'kanji criado com sucesso'
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
+
+app.delete('/deleteAccount', async (req, res) => {
+  const idUser = req.body.idUser;
+  const directory = `public/images/${idUser}`;
+  const deleteKanjis = "DELETE FROM kanjis WHERE id_user = $1;";
+  const deleteUser = "DELETE FROM users WHERE id_user = $1;";
+  console.log(`ID a ser deletado: ${idUser}`);
+
+  try {
+    await pool.query(deleteKanjis, [idUser]);
+    console.log("Kanjis deletados");
+
+    await pool.query(deleteUser, [idUser]);
+    console.log("Usuário deletado");
 
     try {
-        fs.accessSync(storage, constants.F_OK)
+      fs.accessSync(directory, constants.F_OK);
+      const files = fs.readdirSync(directory);
+
+      if (files.length !== 0) {
+        for (let file of files) {
+          const filePath = path.join(directory, file);
+          fs.unlinkSync(filePath);
+        }
+      }
+
+      fs.rmdirSync(directory);
     } catch (err) {
-        if (err.code === 'ENOENT') {
-            fs.mkdirSync(storage)
-        } else {
-            console.error(err)
-        }
+      if (err.code === 'ENOENT') {
+        console.log('sem pasta de usuário');
+      } else {
+        console.log(err);
+      }
     }
-    const actualPath = path.join(storage, nameImg)
-    fs.copyFileSync(filePath, actualPath)
-    fs.unlink(filePath, (err) => {
-        console.error(err)
-    })
-    console.log(actualPath)
 
-    // - - -  GUARDANDO NO BANCO DE DADOS  - - -
-    const hir = data.hir
-    const rom = data.rom
-    const mean = data.mean
-    const uso = data.uso
-    const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, imgPath, id_user) VALUES (?, ?, ?, ?, ?, ?);"
+    const response = {
+      message: "Conta deletada com sucesso"
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
 
-    con.query(doKanji, [hir, rom, mean, uso, actualPath, id], (err, result) => {
-        if (err) throw err;
-        console.log(`${result.affectedRows} novo kanji criado`)
+app.delete('/removeKanji', async (req, res) => {
+  console.log(req.body);
+  const idKanji = req.body.idKanji;
+  const imgPath = req.body.path;
+  const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = $1;";
 
-        const response = {
-            message: 'kanji criado com sucesso'
-        }
-        res.status(200).json(response)
-    })
+  try {
+    await pool.query(deleteKanji, [idKanji]);
+    console.log("Kanji deletado com sucesso");
 
-})
+    fs.unlink(imgPath, (err) => {
+      console.log(err);
+    });
 
-app.delete('/deleteAccount', (req, res) => {
-    const idUser = req.body.idUser
-    const directory = `public/images/${idUser}`
-    const deleteKanjis = "DELETE FROM kanjis WHERE id_user = ?;"
-    const deleteUser = "DELETE FROM users WHERE id_user = ?;"
-    console.log(`ID a ser deletado: ${idUser}`)
-
-    con.query(deleteKanjis, idUser, (err, result) => {
-        if (err) throw err;
-        console.log("kanjis deletados")
-
-        con.query(deleteUser, idUser, (err, result) => {
-            if (err) throw err;
-            console.log("usuário deletado")
-
-            try {
-                fs.accessSync(directory, constants.F_OK)
-                fs.readdir(directory, (err, files) => {
-                    if (err) throw err;
-
-                    if (files.length !== 0) {
-                        for (let file of files) {
-                            const filePath = path.join(directory, file)
-
-                            fs.unlinkSync(filePath, (err) => {
-                                if (err) throw err;
-                            })
-                        }
-                    }
-
-                    fs.rmdir(directory, (err) => {
-                        if (err) throw err;
-                    })
-                })
-            } catch (err) {
-                if (err.code === 'ENOENT') {
-                    console.log('sem pasta de usuário')
-                } else {
-                    console.log(err)
-                }
-            }
-
-
-
-            const response = {
-                message: "Conta deletada com sucesso"
-            }
-            res.status(200).json(response)
-        })
-    })
-})
-
-app.delete('/removeKanji', (req, res) => {
-    console.log(req.body)
-    const idKanji = req.body.idKanji
-    const path = req.body.path
-    const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = ?;"
-
-    con.query(deleteKanji, idKanji, (err, result) => {
-        if (err) throw err;
-        console.log("kanji deletado com sucesso")
-
-        fs.unlink(path, (err) => {
-            console.log(err)
-        })
-        const response = {
-            message: 'kanji deletado'
-        }
-        res.status(200).json(response)
-    })
-})
-
+    const response = {
+      message: 'kanji deletado'
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+});
 
 app.use((req, res) => {
-    res.status(404).sendFile(__dirname + '/public/404.html')
-})
+  res.status(404).sendFile(__dirname + '/public/404.html');
+});
 
 app.listen(port, (err) => {
-    if (err) throw err;
-    console.log("servidor tá rodando")
-})
+  if (err) throw err;
+  console.log("servidor tá rodando");
+});
