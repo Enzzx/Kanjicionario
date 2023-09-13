@@ -391,7 +391,7 @@ createAccount.addEventListener('click', async (e) => {
 						let date = new Date()
 						date.setDate(date.getDate() + 2)
 						document.cookie = `userInfo=${resCookie}; expires=${date.toUTCString()}; path=/`
-y
+
 						pfp.src = 'public/images/pfp.png'
 						while (kanjiHouse.firstChild) {
 							kanjiHouse.removeChild(kanjiHouse.lastChild)
