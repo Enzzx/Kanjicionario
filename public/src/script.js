@@ -101,15 +101,16 @@ createKanji.addEventListener('click', async (e) => {
 		const formData = new FormData()
 		formData.append('img', file)
 
-		const data = { hir, rom, mean, uso, idUser }
-		formData.append('data', JSON.stringify(data))
-
 		let url
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
 		reader.addEventListener('load', () => {
 			return url = reader.result
 		})
+
+		const data = { hir, rom, mean, uso, idUser, url }
+		formData.append('data', JSON.stringify(data))
+
 		const button = document.createElement("input")
 		button.type = "button"
 		button.value = "Excluir"
@@ -420,7 +421,7 @@ function kanjiFE(kanji) {
 	const rom = kanji.rom
 	const mean = kanji.mean
 	const uso = kanji.uso
-	const path = kanji.imgPath
+	const url = kanji.imgPath
 	const button = document.createElement("input")
 	button.type = "button"
 	button.value = "Excluir"
@@ -450,5 +451,5 @@ function kanjiFE(kanji) {
 			if (err) throw err;
 		}
 	})
-	const doKanji = new makeKanji(hir, rom, mean, uso, path, newBox, button)
+	const doKanji = new makeKanji(hir, rom, mean, uso, url, newBox, button)
 }
