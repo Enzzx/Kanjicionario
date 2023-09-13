@@ -130,41 +130,20 @@ app.post('/signUp', async (req, res) => {
   }
 });
 
-app.post('/kanjiCreation', upload.single('img'), async (req, res) => {
-  console.log(req.file);
+app.post('/kanjiCreation', async (req, res) => {
   const data = JSON.parse(req.body.data);
   const id = data.idUser;
-
-  // - - -  GUARDANDO NO FILE PATH  - - -
-  const filePath = req.file.path;
-  const nameImg = req.file.filename;
-  const storage = `public/images/${id}`;
-
-  try {
-    fs.accessSync(storage, constants.F_OK);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      fs.mkdirSync(storage);
-    } else {
-      console.error(err);
-    }
-  }
-  const actualPath = path.join(storage, nameImg);
-  fs.copyFileSync(filePath, actualPath);
-  fs.unlink(filePath, (err) => {
-    console.error(err);
-  });
-  console.log(actualPath);
 
   // - - -  GUARDANDO NO BANCO DE DADOS  - - -
   const hir = data.hir;
   const rom = data.rom;
   const mean = data.mean;
   const uso = data.uso;
+  const url = data.url
   const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, imgPath, id_user) VALUES ($1, $2, $3, $4, $5, $6);";
 
   try {
-    await pool.query(doKanji, [hir, rom, mean, uso, actualPath, id]);
+    await pool.query(doKanji, [hir, rom, mean, uso, url, id]);
     console.log(`Novo kanji foi criado`);
 
     const response = {
