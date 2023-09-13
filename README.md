@@ -13,4 +13,4 @@ E o servidor com:
 * ExpressJs
 * MySQL
 
-Mais sobre o site no ar aqui >[aqui](https://github.com/Enzzx/Kanjicionario/tree/host)<
+Mais sobre o site no ar >[aqui](https://github.com/Enzzx/Kanjicionario/tree/host)<
