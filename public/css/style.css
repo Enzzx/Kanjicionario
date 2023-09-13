@@ -20,21 +20,35 @@ nav {
     box-shadow: 0 2px 3.5px #910e0e;
 }
 
-nav>div {
-    display: flex;
-    align-items: center;
-}
-
-nav img {
-    cursor: pointer;
-}
-
 #name {
     font-weight: bold;
 }
 
 #name span {
     font-size: 1.4em;
+}
+
+#searchbar {
+    background: #f4f4f4;
+    width: 320px;
+    padding: 0.1em 0.6em;
+    border: none;
+    border-radius: 5px;
+}
+#searchbar:focus {
+    background: #ebebeb;
+    border: none;
+}
+
+nav>div {
+    display: flex;
+    align-items: center;
+}
+
+#pfp {
+    cursor: pointer;
+    width: 35px;
+    border-radius: 25px;
 }
 
 #form-button {
@@ -82,6 +96,9 @@ h1 {
     opacity: 0;
     visibility: hidden;
 }
+.close-box {
+    display: none !important;
+}
 
 .form,
 .login,
@@ -124,10 +141,20 @@ h1 {
 .field {
     display: flex;
     flex-direction: column;
-    margin: 0.5em 0;
+    margin: 0.7em 0;
 }
 .field > input {
     padding: 1px 5px;
+}
+.field > p {
+    font-size: 0.8em;
+    color: #c41a1a;
+    opacity: 0;
+    visibility: hidden;
+}
+.field .wrong {
+    opacity: 1;
+    visibility: visible;
 }
 
 .field-buttons {
@@ -152,6 +179,16 @@ body>section {
     justify-content: space-between;
     flex-wrap: wrap;
     padding: 0.8em 1em;
+}
+
+#home-message, #no-kanji-message {
+    flex: 100%;
+    background: lightgrey;
+    color: #c56b6b;
+    text-align: center;
+    padding: 2em 1em;
+    border: dashed red 3px;
+    border-radius: 1em;
 }
 
 .kanji-box {
@@ -208,7 +245,12 @@ body>section {
 
 
 @media screen and (max-width: 800px) {
-    nav img {
+
+    #searchbar {
+        width: 40%;
+    }
+
+    #pfp {
         width: 25px;
     }
 
@@ -223,6 +265,10 @@ body>section {
 
 
 @media screen and (max-width: 500px) {
+
+    #searchbar {
+        width: 100px;
+    }
 
     .form,
     .login,

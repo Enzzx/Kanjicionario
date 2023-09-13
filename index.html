@@ -12,22 +12,25 @@
 <body>
     <nav>
         <p id="name"><span>K</span>anjicionário</p>
+        <input type="text" name="searchbar" id="searchbar" placeholder="buscar">
         <div>
             <p id="form-button" onclick="openForm()">add kanji</p>
-            <img src="public/images/user.svg" onclick="openLogin()">
+            <img src="public/images/user.svg" id="pfp" onclick="openLogin()">
         </div>
     </nav>
-    <h1>Número de Kanjis:</h1>
+    <h1>Número de Kanjis: <span id="kuanjitity"></span></h1>
     <div class="login close">
         <h2>Acesse sua conta</h2>
         <form id="userForm">
             <section class="field">
                 <label for="userName">Usuário:</label>
                 <input type="text" name="userName" id="userName">
+                <p class="warn">*Usuário não encontrado</p>
             </section>
             <section class="field">
                 <label for="password">Senha:</label>
                 <input type="text" name="password" id="password">
+                <p class="warn">*senha incorreta</p>
             </section>
             <section class="field-buttons">
                 <input type="submit" value="Entrar" id="enterAccount">
@@ -48,10 +51,11 @@
     </div>
     <div class="sign close">
         <h2>Crie uma nova conta</h2>
-        <form id="signForm" action="#" method="get">
+        <form id="signForm">
             <section class="field">
                 <label for="newName">Novo usuário:</label>
                 <input type="text" name="newName" id="newName">
+                <p class="warn">*tente outro nome de usuário</p>
             </section>
             <section class="field">
                 <label for="newPassword">Nova senha:</label>
@@ -73,8 +77,8 @@
     </div>
     <div class="form close">
         <h2>Adicionar Kanji</h2>
-        <form id="kanjiForm" action="#" method="get">
-            <input type="file" name="file" id="file" accept="image/*">
+        <form id="kanjiForm">
+            <input type="file" name="file" id="file" accept="image/*" required>
             <section class="field">
                 <label for="hiragana">Hiragana:</label>
                 <input type="text" name="hiragana" id="hiragana" required>
@@ -98,61 +102,8 @@
         </form>
     </div>
     <section id="kanji-house">
-        <article class="kanji-box">
-            <section class="top-box">
-                <article>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU"
-                        alt="kanji">
-                </article>
-                <article>
-                    <aside>
-                        <h3 class="kanji-item">Hiragana</h3>
-                        <p class="kanji-caption">jytf</p>
-                    </aside>
-                    <aside>
-                        <h3 class="kanji-item">Romanji</h3>
-                        <p class="kanji-caption">hngcjh</p>
-                    </aside>
-                </article>
-            </section>
-            <section class="bottom-box">
-                <aside>
-                    <h3 class="kanji-item">Significado literal</h3>
-                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
-                </aside>
-                <aside>
-                    <h3 class="kanji-item">Uso</h3>
-                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
-                </aside>
-            </section>
-        </article>
-        <article class="kanji-box">
-            <section class="top-box">
-                <article>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSjVKo5XIfeh2B62y_XYqjFGNKcl1p6VAFnQ&usqp=CAU"
-                        alt="kanji">
-                </article>
-                <article>
-                    <aside>
-                        <h3 class="kanji-item">Hiragana</h3>
-                        <p class="kanji-caption">jytf</p>
-                    </aside>
-                    <aside>
-                        <h3 class="kanji-item">Romanji</h3>
-                        <p class="kanji-caption">hngcjh</p>
-                    </aside>
-                </article>
-            </section>
-            <section class="bottom-box">
-                <aside>
-                    <h3 class="kanji-item">Significado literal</h3>
-                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
-                </aside>
-                <aside>
-                    <h3 class="kanji-item">Uso</h3>
-                    <p class="kanji-caption">Lorem ipsum dolor sit, a met consectetur adipisicing elit. </p>
-                </aside>
-            </section>
+        <article id="home-message">
+            <h2>Entre em uma conta para utilizar o kanjicionário</h2>
         </article>
     </section>
     <script src="public/src/script.js"></script>

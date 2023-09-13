@@ -5,7 +5,7 @@ O Kanjicionário é um dicionário de kanjis, onde os usuários podem adicionar 
 O site foi criado usando:
 * HTML
 * CSS
-* JAVASCRIPT
+* Javascript
 
 E o servidor com:
 * ExpressJs
