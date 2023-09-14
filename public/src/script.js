@@ -98,12 +98,31 @@ createKanji.addEventListener('click', async (e) => {
 		const mean = document.querySelector("#significado").value
 		const uso = document.querySelector("#uso").value
 
-		let data
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
-		reader.addEventListener('load', () => {
+		reader.addEventListener('load', async () => {
 			const url = reader.result
-			data = { hir, rom, mean, uso, idUser, url }
+			const data = { hir, rom, mean, uso, idUser, url }
+			const head = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data)
+			}
+
+			try {
+				const requisition = await fetch('/kanjiCreation', head)
+				const result = await requisition.json()
+
+				console.log(result)
+				numKanjis++
+				kuanjitity.textContent = numKanjis
+				if (kanjiHouse.appendChild(noKanjiMessage)) {
+					kanjiHouse.removeChild(noKanjiMessage)
+				}
+				const doKanji = new makeKanji(hir, rom, mean, uso, url, newBox, button)
+			} catch (err) {
+				throw err
+			}
 		})
 
 
@@ -114,26 +133,6 @@ createKanji.addEventListener('click', async (e) => {
 			// A PENSAR
 		})
 
-		const head = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(data)
-		}
-
-		try {
-			const requisition = await fetch('/kanjiCreation', head)
-			const result = await requisition.json()
-
-			console.log(result)
-			numKanjis++
-			kuanjitity.textContent = numKanjis
-			if (kanjiHouse.appendChild(noKanjiMessage)) {
-				kanjiHouse.removeChild(noKanjiMessage)
-			}
-			const doKanji = new makeKanji(hir, rom, mean, uso, url, newBox, button)
-		} catch (err) {
-			throw err
-		}
 	}
 
 
