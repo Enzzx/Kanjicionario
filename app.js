@@ -1,11 +1,6 @@
 const express = require("express");
 const app = express();
 const port = 8080;
-const path = require('path');
-const fs = require('fs');
-const { constants } = require("fs/promises");
-const multer = require('multer');
-const upload = multer({ dest: 'public/images/' });
 const { Pool } = require('pg');
 
 // - - -  BANCO DE DADOS  - - -
@@ -131,7 +126,7 @@ app.post('/signUp', async (req, res) => {
 });
 
 app.post('/kanjiCreation', async (req, res) => {
-  const data = JSON.parse(req.body.data);
+  const data = req.body;
   const id = data.idUser;
 
   // - - -  GUARDANDO NO BANCO DE DADOS  - - -
