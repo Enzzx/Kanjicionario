@@ -198,16 +198,11 @@ app.delete('/deleteAccount', async (req, res) => {
 app.delete('/removeKanji', async (req, res) => {
   console.log(req.body);
   const idKanji = req.body.idKanji;
-  const imgPath = req.body.path;
   const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = $1;";
 
   try {
     await pool.query(deleteKanji, [idKanji]);
     console.log("Kanji deletado com sucesso");
-
-    fs.unlink(imgPath, (err) => {
-      console.log(err);
-    });
 
     const response = {
       message: 'kanji deletado'
