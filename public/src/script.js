@@ -98,9 +98,6 @@ createKanji.addEventListener('click', async (e) => {
 		const mean = document.querySelector("#significado").value
 		const uso = document.querySelector("#uso").value
 
-		const formData = new FormData()
-		formData.append('img', file)
-
 		let url
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
@@ -109,7 +106,6 @@ createKanji.addEventListener('click', async (e) => {
 		})
 
 		const data = { hir, rom, mean, uso, idUser, url }
-		formData.append('data', JSON.stringify(data))
 
 		const button = document.createElement("input")
 		button.type = "button"
@@ -120,7 +116,8 @@ createKanji.addEventListener('click', async (e) => {
 
 		const head = {
 			method: 'POST',
-			body: formData
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringfy(data)
 		}
 
 		try {
