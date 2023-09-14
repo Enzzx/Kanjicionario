@@ -135,7 +135,7 @@ app.post('/kanjiCreation', async (req, res) => {
   const mean = data.mean;
   const uso = data.uso;
   const url = data.url
-  const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, imgPath, id_user) VALUES ($1, $2, $3, $4, $5, $6);";
+  const doKanji = "INSERT INTO kanjis (hir, rom, mean, uso, imgpath, id_user) VALUES ($1, $2, $3, $4, $5, $6);";
 
   try {
     await pool.query(doKanji, [hir, rom, mean, uso, url, id]);
