@@ -98,14 +98,14 @@ createKanji.addEventListener('click', async (e) => {
 		const mean = document.querySelector("#significado").value
 		const uso = document.querySelector("#uso").value
 
-		let url
+		let data
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
 		reader.addEventListener('load', () => {
-			return url = reader.result
+			const url = reader.result
+			data = { hir, rom, mean, uso, idUser, url }
 		})
 
-		const data = { hir, rom, mean, uso, idUser, url }
 
 		const button = document.createElement("input")
 		button.type = "button"
