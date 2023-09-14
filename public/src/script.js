@@ -117,7 +117,7 @@ createKanji.addEventListener('click', async (e) => {
 		const head = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringfy(data)
+			body: JSON.stringify(data)
 		}
 
 		try {
