@@ -417,13 +417,13 @@ function kanjiFE(kanji) {
 	const rom = kanji.rom
 	const mean = kanji.mean
 	const uso = kanji.uso
-	const url = kanji.imgPath
+	const url = kanji.imgpath
 	const button = document.createElement("input")
 	button.type = "button"
 	button.value = "Excluir"
 	button.addEventListener('click', async () => {
 		button.parentNode.style.opacity = '0.7'
-		data = { idKanji, path }
+		data = { idKanji}
 		head = {
 			method: 'DELETE',
 			headers: { 'Content-Type': 'application/json' },
