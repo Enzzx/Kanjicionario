@@ -18,94 +18,107 @@
             <img src="public/images/user.svg" id="pfp" onclick="openLogin()">
         </div>
     </nav>
-    <h1>Número de Kanjis: <span id="kuanjitity"></span></h1>
-    <div class="login close">
-        <h2>Acesse sua conta</h2>
-        <form id="userForm" autocomplete="off">
-            <section class="field">
-                <label for="userName">Usuário:</label>
-                <input type="text" name="userName" id="userName">
-                <p class="warn">*Usuário não encontrado</p>
+    <main>
+        <h1>Número de Kanjis: <span id="kuanjitity"></span></h1>
+        <div class="login close">
+            <h2>Acesse sua conta</h2>
+            <form id="userForm" autocomplete="off">
+                <section class="field">
+                    <label for="userName">Usuário:</label>
+                    <input type="text" name="userName" id="userName">
+                    <p class="warn">*Usuário não encontrado</p>
+                </section>
+                <section class="field">
+                    <label for="password">Senha:</label>
+                    <input type="text" name="password" id="password">
+                    <p class="warn">*senha incorreta</p>
+                </section>
+                <section class="field-buttons">
+                    <input type="submit" value="Entrar" id="enterAccount">
+                    <input type="button" value="Sair" onclick="resetAll()">
+                </section>
+            </form>
+            <p>Ainda não possui uma conta?</p>
+            <button onClick="openSign()">Criar agora</button>
+        </div>
+        <div class="acc close">
+            <h2>Você já está conectado</h2>
+            <p>O que deseja fazer?</p>
+            <section>
+                <input type="button" value="voltar" onclick="resetAll()">
+                <input type="button" value="Sair da conta" onclick="getOut()">
+                <input type="button" value="Excluir conta" onclick="removeAcc()">
             </section>
-            <section class="field">
-                <label for="password">Senha:</label>
-                <input type="text" name="password" id="password">
-                <p class="warn">*senha incorreta</p>
-            </section>
+        </div>
+        <div class="sign close">
+            <h2>Crie uma nova conta</h2>
+            <form id="signForm" autocomplete="off">
+                <section class="field">
+                    <label for="newName">Novo usuário:</label>
+                    <input type="text" name="newName" id="newName">
+                    <p class="warn">*tente outro nome de usuário</p>
+                </section>
+                <section class="field">
+                    <label for="newPassword">Nova senha:</label>
+                    <input type="text" name="newPassword" id="newPassword">
+                </section>
+                <section class="field-buttons">
+                    <input type="submit" value="Criar" id="createAccount">
+                    <input type="button" value="Cancelar" onclick="resetAll()">
+                </section>
+            </form>
+        </div>
+        <div class="no-acc close">
+            <h2>Você não está conectado</h2>
+            <p>conecte-se a uma conta para criar kanjis</p>
             <section class="field-buttons">
-                <input type="submit" value="Entrar" id="enterAccount">
-                <input type="button" value="Sair" onclick="resetAll()">
+                <input type="button" value="Cadastrar-se" onclick="openLogin()">
+                <input type="button" value="Fechar" onclick="resetAll()">
             </section>
-        </form>
-        <p>Ainda não possui uma conta?</p>
-        <button onClick="openSign()">Criar agora</button>
-    </div>
-    <div class="acc close">
-        <h2>Você já está conectado</h2>
-        <p>O que deseja fazer?</p>
+        </div>
+        <div class="form close">
+            <h2>Adicionar Kanji</h2>
+            <form id="kanjiForm" autocomplete="off">
+                <input type="file" name="file" id="file" accept="image/*" required>
+                <section class="field">
+                    <label for="hiragana">Hiragana:</label>
+                    <input type="text" name="hiragana" id="hiragana" required>
+                </section>
+                <section class="field">
+                    <label for="romanji">Romanji:</label>
+                    <input type="text" name="romanji" id="romanji" required>
+                </section>
+                <section class="field">
+                    <label for="significado">Significado:</label>
+                    <input type="text" name="significado" id="significado" required>
+                </section>
+                <section class="field">
+                    <label for="uso">Uso:</label>
+                    <textarea name="uso" id="uso" rows="3" cols="20" required></textarea>
+                </section>
+                <section class="field-buttons">
+                    <input type="submit" value="Adicionar" id="createKanji">
+                    <input type="button" value="Cancelar" onclick="resetAll()">
+                </section>
+            </form>
+        </div>
+        <section id="kanji-house">
+            <article id="home-message">
+                <h2>Entre em uma conta para utilizar o kanjicionário</h2>
+            </article>
+        </section>
+    </main>
+    <footer>
+        <p>Projeto criado por Enzo Bellotti</p>
         <section>
-            <input type="button" value="voltar" onclick="resetAll()">
-            <input type="button" value="Sair da conta" onclick="getOut()">
-            <input type="button" value="Excluir conta" onclick="removeAcc()">
+            <img src="public/images/linkedin.png" alt="linkedin">
+            <a href="https://www.linkedin.com/in/enzo-silva-bellotti-50a640253/" target="_blank">linkedin</a>
         </section>
-    </div>
-    <div class="sign close">
-        <h2>Crie uma nova conta</h2>
-        <form id="signForm" autocomplete="off">
-            <section class="field">
-                <label for="newName">Novo usuário:</label>
-                <input type="text" name="newName" id="newName">
-                <p class="warn">*tente outro nome de usuário</p>
-            </section>
-            <section class="field">
-                <label for="newPassword">Nova senha:</label>
-                <input type="text" name="newPassword" id="newPassword">
-            </section>
-            <section class="field-buttons">
-                <input type="submit" value="Criar" id="createAccount">
-                <input type="button" value="Cancelar" onclick="resetAll()">
-            </section>
-        </form>
-    </div>
-    <div class="no-acc close">
-        <h2>Você não está conectado</h2>
-        <p>conecte-se a uma conta para criar kanjis</p>
-        <section class="field-buttons">
-            <input type="button" value="Cadastrar-se" onclick="openLogin()">
-            <input type="button" value="Fechar" onclick="resetAll()">
+        <section>
+            <img src="public/images/github.png" alt="github">
+            <a href="https://github.com/Enzzx" target="_blank">github</a>
         </section>
-    </div>
-    <div class="form close">
-        <h2>Adicionar Kanji</h2>
-        <form id="kanjiForm" autocomplete="off">
-            <input type="file" name="file" id="file" accept="image/*" required>
-            <section class="field">
-                <label for="hiragana">Hiragana:</label>
-                <input type="text" name="hiragana" id="hiragana" required>
-            </section>
-            <section class="field">
-                <label for="romanji">Romanji:</label>
-                <input type="text" name="romanji" id="romanji" required>
-            </section>
-            <section class="field">
-                <label for="significado">Significado:</label>
-                <input type="text" name="significado" id="significado" required>
-            </section>
-            <section class="field">
-                <label for="uso">Uso:</label>
-                <textarea name="uso" id="uso" rows="3" cols="20" required></textarea>
-            </section>
-            <section class="field-buttons">
-                <input type="submit" value="Adicionar" id="createKanji">
-                <input type="button" value="Cancelar" onclick="resetAll()">
-            </section>
-        </form>
-    </div>
-    <section id="kanji-house">
-        <article id="home-message">
-            <h2>Entre em uma conta para utilizar o kanjicionário</h2>
-        </article>
-    </section>
+    </footer>
     <script src="public/src/script.js"></script>
 </body>
 

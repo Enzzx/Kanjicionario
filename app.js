@@ -223,20 +223,38 @@ app.delete('/removeKanji', (req, res) => {
     console.log(req.body)
     const idKanji = req.body.idKanji
     const path = req.body.path
-    const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = ?;"
+    let deleteKanji = "DELETE FROM kanjis WHERE id_kanji = ?;"
 
-    con.query(deleteKanji, idKanji, (err, result) => {
-        if (err) throw err;
-        console.log("kanji deletado com sucesso")
-
-        fs.unlink(path, (err) => {
-            console.log(err)
+    if (!isNaN(idKanji)) {
+        con.query(deleteKanji, idKanji, (err, result) => {
+            if (err) throw err;
+            console.log("kanji deletado com sucesso")
+    
+            fs.unlink(path, (err) => {
+                console.log(err)
+            })
+            const response = {
+                message: 'kanji deletado'
+            }
+            res.status(200).json(response)
         })
-        const response = {
-            message: 'kanji deletado'
-        }
-        res.status(200).json(response)
-    })
+    } else {
+        const idUser = req.body.idUser
+        const rom = req.body.rom
+        const uso = req.body.uso
+        deleteKanji = "DELETE FROM kanjis WHERE rom = ? AND uso = ? AND id_user = ?;"
+
+        con.query(deleteKanji, [rom, uso, idUser], (err, result) => {
+            if (err) throw err;
+            console.log("kanji deletado com sucesso")
+
+            const response = {
+                message: 'kanji deletado'
+            }
+            res.status(200).json(response)
+
+        })
+    }
 })
 
 
