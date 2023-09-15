@@ -11,7 +11,7 @@ O site foi criado usando:
 
 E o servidor com:
 * ExpressJs
-* PostgreeSQL
+* PostgreSQL
 
 
 veja o site no ar 👉[https://kanjicionario.onrender.com/](https://kanjicionario.onrender.com/)
