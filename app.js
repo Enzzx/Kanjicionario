@@ -199,7 +199,7 @@ app.delete('/deleteAccount', async (req, res) => {
 app.delete('/removeKanji', async (req, res) => {
     console.log(req.body);
     const idKanji = req.body.idKanji;
-    const deleteKanji = "DELETE FROM kanjis WHERE id_kanji = $1;";
+    let deleteKanji = "DELETE FROM kanjis WHERE id_kanji = $1;";
 
     if (!isNaN(idKanji)) {
         try {
