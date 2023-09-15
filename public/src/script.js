@@ -130,7 +130,31 @@ createKanji.addEventListener('click', async (e) => {
 		button.type = "button"
 		button.value = "Excluir"
 		button.addEventListener('click', async () => {
-			// A PENSAR
+			button.parentNode.style.opacity = '0.7'
+			const data = { hir, rom, mean, uso, idUser }
+			const head = {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data)
+			}
+
+			try {
+				const removing = await fetch('/removeKanji', head)
+				const removed = await removing.json()
+
+				console.log(removed.message)
+				const hideKanji = setInterval(() => {
+					button.parentNode.remove()
+					numKanjis--
+					kuanjitity.textContent = numKanjis
+					if (numKanjis === 0) {
+						kanjiHouse.appendChild(noKanjiMessage)
+					}
+					clearInterval(hideKanji)
+				}, 200)
+			} catch (err) {
+				throw err
+			}
 		})
 
 	}
