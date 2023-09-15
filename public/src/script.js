@@ -58,7 +58,7 @@ class makeKanji {
 		nB.innerHTML = `
   <section class="top-box">
         <article>
-            <img src="${img}" alt="kanji">
+            <img src="${img}" alt="kanji" loading="lazy">
         </article>
         <article>
             <aside>
