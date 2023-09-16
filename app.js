@@ -21,9 +21,9 @@ pool.connect()
     });
 
 // - - -  USOS EXTERNOS  - - -
-app.use(express.json({ limit: '100mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));
-app.use(express.urlencoded({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '10mb' }));
 
 // - - -  SERVIDOR  - - -
 app.post("/logIn", async (req, res) => {
