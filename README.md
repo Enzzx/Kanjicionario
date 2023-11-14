@@ -18,4 +18,4 @@ veja o site no ar 👉[https://kanjicionario.onrender.com/](https://kanjicionari
 
 
 
-*uso apenas para fins de estudo, pois os dados do banco de dados são apagados pelo serviço de host e à página possívelmente demorará para carregar
+*uso apenas para fins de estudo, pois os dados do banco de dados são apagados pelo serviço de host a cada 3 meses e a página possívelmente demorará para carregar
