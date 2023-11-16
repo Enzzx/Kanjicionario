@@ -6,9 +6,9 @@ const { Pool } = require('pg');
 // - - -  BANCO DE DADOS  - - -
 const pool = new Pool({
     user: 'zenzx',
-    host: 'dpg-claf18harfss73cqohcg-a',
-    database: 'kanjicionario_db_zy4h',
-    password: 'rqxqgJcXpeUnq3fDueWWAFHbOkSzZ8xU',
+    host: 'dpg-claoom3mot1c73849ajg-a',
+    database: 'db_kanjicionario',
+    password: 'NgRyRiN9GiIwnCacpDI7k00yHaHNfYut',
     port: 5432
 });
 
