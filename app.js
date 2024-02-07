@@ -12,7 +12,7 @@ const mysql = require("mysql")
 const con = mysql.createConnection({
     host: "localhost",
     user: "zenzx",
-    password: "5142615enzo",
+    password: "-----",
     database: "teste"
 })
 con.connect((err) => {
