@@ -11,10 +11,10 @@ require("dotenv").config()
 
 // - - -  BANCO DE DADOS  - - -
 const con = mysql.createConnection({
-    host: process.env.USER_HOSTa,
-    user: process.env.USER_NAMEa,
-    password: process.env.USER_PASSWORDa,
-    database: process.env.USER_DBa
+    host: process.env.USER_HOST,
+    user: process.env.USER_NAME,
+    password: process.env.USER_PASSWORD,
+    database: process.env.USER_DB
 })
 con.connect((err) => {
     if (err) throw err;
