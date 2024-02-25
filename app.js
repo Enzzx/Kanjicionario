@@ -7,13 +7,14 @@ const { constants } = require("fs/promises")
 const multer = require('multer')
 const upload = multer({ dest: 'public/images/' })
 const mysql = require("mysql")
+require("dotenv").config()
 
 // - - -  BANCO DE DADOS  - - -
 const con = mysql.createConnection({
-    host: "localhost",
-    user: "zenzx",
-    password: "-----",
-    database: "teste"
+    host: process.env.USER_HOST,
+    user: process.env.USER_NAME,
+    password: process.env.USER_PASSWORD,
+    database: process.env.USER_DB
 })
 con.connect((err) => {
     if (err) throw err;
